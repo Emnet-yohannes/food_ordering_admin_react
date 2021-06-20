@@ -33,11 +33,11 @@ const App=({food})=> {
   const removeFoodSize = (index)=>{
    const filterdFoodSizes = [...FoodSizes];
    console.log(filterdFoodSizes.length)
-   while(filterdFoodSizes.length>1){
+
 
        filterdFoodSizes.splice(index, 1);
        setFoodSizes(filterdFoodSizes);
-   }
+   
   }
 
   const handleClickOpen = () => {
