@@ -73,6 +73,7 @@ const App=({food})=> {
         fullWidth
         maxWidth="md"
       >
+        <DialogTitle id="simple-dialog-title">Add Food Size </DialogTitle>
       
         {
           FoodSizes.map((FoodSize,index)=>(
