@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TextField, Typography, Grid, Box, Container } from "@material-ui/core";
 import React from "react";
 import Button from "@material-ui/core/Button";
@@ -7,6 +7,9 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { NativeSelect,Radio } from "@material-ui/core";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import EditIcon from "@material-ui/icons/Edit";
 import { useFormik } from "formik";
@@ -17,6 +20,25 @@ import 'firebase/firestore';
 export default function FormDialog({ extra }) {
   const [open, setOpen] = React.useState(false);
   const [loading, setLoading] = useState(false);
+  const [foodCategory ,setFoodCategory] = useState("");
+  const [foodCategoryArray , setFoodCategoryArray] = useState([])
+  const getAllFoodCategory = () => {
+    setLoading(true);
+    ref.firestore().collection("food_category").onSnapshot((querySnapshot) => {
+      const items = [];
+      querySnapshot.forEach((doc) => {
+        // items.push(doc.data());
+        items.push({ id: doc.id, ...doc.data() });
+      });
+      setFoodCategoryArray(items);
+      
+      setLoading(false);
+    });
+  };
+  useEffect(() => {
+    getAllFoodCategory()
+ 
+  }, [])
   const params = useParams()
   //   //console.log(open)
 
@@ -43,7 +65,10 @@ export default function FormDialog({ extra }) {
     ref.firestore().collection("food").doc(params.id).collection("extras").doc(extra.id).update({
         extra_name: values.extra_name,
         // food_description: values.food_description,
-        extra_price:values.extra_price
+        extra_price:values.extra_price,
+        extra_option:values.extra_option,
+        food_category_id:values.food_category_id
+
     });
 
   };
@@ -52,7 +77,10 @@ export default function FormDialog({ extra }) {
     initialValues: {
       extra_name: extra.extra_name,
     //   food_description: extra.food_description,
-      extra_price:extra.extra_price
+      extra_price:extra.extra_price,
+      extra_option:extra.extra_option,
+      food_category_id:extra.food_category_id
+
     },
     // validationSchema: schema,
     onSubmit: async (values) => {
@@ -122,7 +150,33 @@ export default function FormDialog({ extra }) {
                     style={{ width: "100%" }}
                   />
                 </Box>
-                
+                <Box p={2}>
+                  <Typography align="left">Food Category</Typography>
+                  <NativeSelect
+                  name="food_category_id"
+          id="demo-customized-select-native"
+          onChange={formik.handleChange}
+          value={formik.values.food_category_id}
+        >
+          {/* <option aria-label="None" value="" />
+          <option value="ten">Ten</option>
+          <option value="twenty">Twenty</option>
+          <option value="thirty">Thirty</option> */}
+          <option aria-label="None" value=""/>
+          {foodCategoryArray.map((fcategory=>(
+            <option value={fcategory.id}>{fcategory.category_name}</option>
+          )))}
+        </NativeSelect>
+                </Box>
+                <Box p={2}>
+                  <Typography align="left">extra_option</Typography>
+                  
+                  <RadioGroup aria-label="extra_option" name="extra_option" value={formik.values.extra_option} onChange={formik.handleChange}>
+    <FormControlLabel value="RadioButtons" control={<Radio />} label="Radio Buttons" />
+    <FormControlLabel value="CheckBox" control={<Radio />} label="CheckBox" />
+   
+  </RadioGroup>
+                </Box>
               </Grid>
 
             </Grid>

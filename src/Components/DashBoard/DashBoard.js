@@ -86,7 +86,10 @@ const DashBoard = () => {
         var st = 0
         ref.firestore().collection("orders").onSnapshot((querySnapshot)=>{
           querySnapshot.forEach((doc)=>{
-            st = doc.get("total_price")+st
+            if(doc.get("total_price")){
+
+              st = doc.get("total_price")+st
+            }
             
             // //console.log(st)
           })

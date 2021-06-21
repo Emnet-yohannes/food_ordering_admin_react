@@ -32,6 +32,7 @@ export default function FormDialog() {
       setLoading(false);
     });
   };
+
  useEffect(() => {
    getAllFoodCategory()
 

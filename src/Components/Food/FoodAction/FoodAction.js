@@ -13,7 +13,8 @@ const FoodAction = ({ food}) => {
     return (
         <div style={{display:"flex" , margin:"10px"}}>
             {/* <Extras component={NavLink} to={`${path}/extras`} food={food}/> */}
-            <Button component={NavLink}  to={`${path}/extra/${food.id}`} startIcon={<VisibilityIcon />} style={{ marginRight: "10px" ,backgroundColor:"darkgreen",color:"white",width:"100px",height:"27px" ,marginTop:"12px"}}>
+            <Button component={NavLink}  to={`${path}/extra/${food.id}`} startIcon={<VisibilityIcon style={{width:"20px",height:"15px"}}/>} 
+            style={{ marginRight: "10px" ,backgroundColor:"darkgreen",color:"white",width:"100px",height:"27px" ,marginTop:"12px",fontSize:"9px"}}>
             Extras
             </Button>
             <FoodEdit  food={food}/>

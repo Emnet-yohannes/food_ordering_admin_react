@@ -15,6 +15,17 @@ import * as Yup from "yup";
 import ref from "../../../../firebase/firebase";
 import 'firebase/firestore';
 
+const schema = Yup.object().shape({
+  name: Yup.string().min(2, 'Too Short!')
+  .max(50, 'Too Long!')
+  .required('Required'),
+  phone_number: Yup.string().matches(new RegExp('[0-9]{7}')),
+  email: Yup.string().email().required("email is Required"),
+  approve_status: Yup.string().required("approve status is required"),
+  status: Yup.string().required(" status is required"),
+  online_status: Yup.string().required("online status is required"),
+
+});
 const FormDialog = ({ driver,actionName ,history}) => {
   const [open, setOpen] = React.useState(false);
   const [loading, setLoading] = useState(false);
@@ -31,15 +42,6 @@ const FormDialog = ({ driver,actionName ,history}) => {
     setOpen(false);
   };
 
-  const schema = Yup.object().shape({
-    name: Yup.string().required("Name is Required"),
-    phone_number: Yup.string().matches(new RegExp('[0-9]{7}')),
-    email: Yup.string().email().required("email is Required"),
-    approve_status: Yup.string().required("approve status is required"),
-    status: Yup.string().required(" status is required"),
-    online_status: Yup.string().required("online status is required"),
-
-  });
 
   // ref.collection("orders").onSnapshot((querySnapshot) => {
   //   const items = [];
@@ -156,6 +158,8 @@ const handleSignup = async (values)=>{
         fullWidth
   maxWidth="md"
       >
+        {
+        ({ errors, touched }) =>
          <form onSubmit={formik.handleSubmit}>
     
           <DialogTitle id="form-dialog-title">{actionName}</DialogTitle>
@@ -166,6 +170,9 @@ const handleSignup = async (values)=>{
               <Grid item xs={5}>
                 <Box p={2}>
                   <Typography align="left">name</Typography>
+                  {errors.firstName && touched.firstName ? (
+             <div>{errors.firstName}</div>
+           ) : null}
                   <TextField
                     id="outlined-basic"
                     name="name"
@@ -263,6 +270,7 @@ const handleSignup = async (values)=>{
             </Button>
           </DialogActions>
         </form>
+        }
       </Dialog>
     </div>
   );
