@@ -75,7 +75,8 @@ export default function FormDialog() {
       food_name: values.food_name,
       food_description: values.food_description,
       food_price: values.food_price,
-      food_category_id: values.food_category_id
+      food_category_id: values.food_category_id,
+
     });
 
     // updateRef.update({
@@ -174,12 +175,9 @@ export default function FormDialog() {
                   name="food_category_id"
           id="demo-customized-select-native"
           onChange={formik.handleChange}
+          style={{width:"100%"}}
           value={formik.values.food_category_id}
         >
-          {/* <option aria-label="None" value="" />
-          <option value="ten">Ten</option>
-          <option value="twenty">Twenty</option>
-          <option value="thirty">Thirty</option> */}
           <option aria-label="None" value=""/>
           {foodCategoryArray.map((fcategory=>(
             <option value={fcategory.id}>{fcategory.category_name}</option>

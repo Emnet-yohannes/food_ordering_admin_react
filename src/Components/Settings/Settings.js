@@ -120,7 +120,7 @@ export default function DataGridDemo({ orderPath }) {
             
 
       <Typography variant="h4">Settings</Typography>
-      <div textAlign="right" pb={2}>
+      <div style={{textAlign:"right",margin:"13px"}} pb={2}>
       <AddSetting />
       </div>
       {/* <Addsettings /> */}

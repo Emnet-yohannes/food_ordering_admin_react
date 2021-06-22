@@ -162,6 +162,7 @@ export default function FormDialog({ user }) {
                   name="user_status"
           id="demo-customized-select-native"
           onChange={formik.handleChange}
+          style={{width:"100%"}}
           value={formik.values.user_status}
         >
           {/* <option aria-label="None" value="" />

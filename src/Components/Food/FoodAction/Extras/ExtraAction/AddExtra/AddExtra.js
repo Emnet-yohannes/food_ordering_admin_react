@@ -151,6 +151,7 @@ export default function FormDialog({ extra }) {
                   name="food_category_id"
           id="demo-customized-select-native"
           onChange={formik.handleChange}
+          style={{width:"100%"}}
           value={formik.values.food_category_id}
         >
           {/* <option aria-label="None" value="" />

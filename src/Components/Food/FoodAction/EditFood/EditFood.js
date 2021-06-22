@@ -166,6 +166,7 @@ export default function FormDialog({ food }) {
                   <NativeSelect
                   name="food_category_id"
           id="demo-customized-select-native"
+          style={{width:"100%"}}
           onChange={formik.handleChange}
           value={formik.values.food_category_id}
         >
