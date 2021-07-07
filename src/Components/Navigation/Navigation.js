@@ -9,6 +9,7 @@ import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
+import PasswordChange from '../ChangeUserAndPassword/ChangeUserAndPassword';
 import FoodCategory from '../FoodCategory/FoodCategory'
 import MenuIcon from '@material-ui/icons/Menu';
 import {Button,Box} from '@material-ui/core'
@@ -98,7 +99,8 @@ function ResponsiveDrawer(props) {
           <Typography variant="h4" noWrap >
             Food Ordering
           </Typography>
-          <Box >
+          <Box display="flex" justifyContent="space-around">
+            
         <Button
         onClick={function(){
           ref.auth().signOut();
@@ -110,6 +112,7 @@ function ResponsiveDrawer(props) {
       >
         Logout
       </Button>
+      <PasswordChange />
           </Box>
           </Box>
           
