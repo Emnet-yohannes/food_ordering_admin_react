@@ -111,6 +111,7 @@ export default function FormDialog({ order }) {
                     id="outlined-basic"
                     name="order_date"
                     required
+                    autoComplete="off"
                     value={formik.values.order_date}
                     onChange={formik.handleChange}
                     variant="outlined"
@@ -125,6 +126,7 @@ export default function FormDialog({ order }) {
                     id="outlined-basic"
                     name="customer_name"
                     required
+                    autoComplete="off"
                     value={formik.values.customer_name}
                     onChange={formik.handleChange}
                     variant="outlined"
@@ -148,6 +150,7 @@ export default function FormDialog({ order }) {
                     id="outlined-basic"
                     name="payment_status"
                     required
+                    autoComplete="off"
                     value={formik.values.payment_status}
                     onChange={formik.handleChange}
                     variant="outlined"

@@ -180,6 +180,7 @@ const handleSignup = async (values)=>{
                     onChange={formik.handleChange}
                     variant="outlined"
                     required
+                    autoComplete="off"
                     style={{ width: "100%" }}/>
                 </Box>
                 <Box p={2}>
@@ -188,6 +189,7 @@ const handleSignup = async (values)=>{
                     id="outlined-basic"
                     name="last_name"
                     required
+                    autoComplete="off"
                     value={formik.values.last_name}
                     onChange={formik.handleChange}
                     variant="outlined"
@@ -198,7 +200,8 @@ const handleSignup = async (values)=>{
                   <TextField
                     id="outlined-basic"
                     name="phone_number"
-                    required
+                    rrequired
+                    autoComplete="off"
                     value={formik.values.phone_number}
                     onChange={formik.handleChange}
                     variant="outlined"
@@ -211,6 +214,7 @@ const handleSignup = async (values)=>{
                     id="outlined-basic"
                     name="email"
                     required
+                    autoComplete="off"
                     value={formik.values.email}
                     onChange={formik.handleChange}
                     variant="outlined"
@@ -227,6 +231,7 @@ const handleSignup = async (values)=>{
                     id="outlined-basic"
                     name="status"
                     required
+                    autoComplete="off"
                     value={formik.values.status}
                     onChange={formik.handleChange}
                     variant="outlined"
@@ -239,6 +244,7 @@ const handleSignup = async (values)=>{
                     id="outlined-basic"
                     name="online_status"
                     required
+                    autoComplete="off"
                     value={formik.values.online_status}
                     onChange={formik.handleChange}
                     variant="outlined"
@@ -251,6 +257,7 @@ const handleSignup = async (values)=>{
                     id="outlined-basic"
                     name="approve_status"
                     required
+                    autoComplete="off"
                     value={formik.values.approve_status}
                     onChange={formik.handleChange}
                     variant="outlined"

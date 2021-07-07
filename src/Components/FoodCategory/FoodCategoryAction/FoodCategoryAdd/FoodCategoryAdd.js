@@ -113,6 +113,7 @@ export default function FormDialog() {
                     variant="outlined"
                     style={{ width: "100%" }}
                     required
+                    autoComplete="off"
                   > 
                   </TextField>
                 </Box>
@@ -125,6 +126,8 @@ export default function FormDialog() {
                     onChange={formik.handleChange}
                     variant="outlined"
                     style={{ width: "100%" }}
+                    required
+                    autoComplete="off"
                   />
                 </Box>
                

@@ -104,6 +104,7 @@ export default function FormDialog({ foodCategory }) {
                     id="outlined-basic"
                     name="category_name"
                     required
+                    autoComplete="off"
                     value={formik.values.category_name}
                     onChange={formik.handleChange}
                     variant="outlined"
@@ -121,6 +122,7 @@ export default function FormDialog({ foodCategory }) {
                     onChange={formik.handleChange}
                     variant="outlined"
                     required
+                    autoComplete="off"
                     style={{ width: "100%" }}
                   />
                 </Box>

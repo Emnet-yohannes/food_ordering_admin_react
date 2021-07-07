@@ -75,6 +75,7 @@ const Login = ({ history }) => {
               name="email"
               type="email"
               required
+              autoComplete="off"
               className={styles.form_item}
               variant="outlined"
               style={{ width: "90%", marginTop: "1%" }}
@@ -86,6 +87,7 @@ const Login = ({ history }) => {
               name="password"
               type="password"
               required
+              autoComplete="off"
               variant="outlined"
               style={{ width: "90%", marginTop: "1%" }}
             />

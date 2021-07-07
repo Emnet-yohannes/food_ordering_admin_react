@@ -19,7 +19,7 @@ const FoodAction = ({ food}) => {
             </Button>
             <FoodEdit  food={food}/>
             <FoodDelete  food={food}/>
-            <AddFoodSize food={food}/>
+            {/* <AddFoodSize food={food}/> */}
         </div>
     )
 }

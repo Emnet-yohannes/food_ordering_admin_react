@@ -165,6 +165,8 @@ export default function FormDialog({ food }) {
                   <TextField
                     id="outlined-basic"
                     name="food_name"
+                    required
+                    autoComplete="off"
                     value={formik.values.food_name}
                     onChange={formik.handleChange}
                     variant="outlined"
@@ -193,6 +195,8 @@ export default function FormDialog({ food }) {
                   <TextField
                     id="outlined-basic"
                     name="food_description"
+                    required
+                    autoComplete="off"
                     value={formik.values.food_description}
                     onChange={formik.handleChange}
                     variant="outlined"
@@ -204,6 +208,8 @@ export default function FormDialog({ food }) {
                   <TextField
                     id="outlined-basic"
                     name="food_price"
+                    required
+                    autoComplete="off"
                     value={formik.values.food_price}
                     onChange={formik.handleChange}
                     variant="outlined"

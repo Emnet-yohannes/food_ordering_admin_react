@@ -71,7 +71,7 @@ export default function FormDialog() {
 
     var checkBox = [];
     function parseInputCheckbox(value) {
-    
+      if(value!=null){
       var inputArrays = value.split("\n");
       console.log(inputArrays);
     
@@ -125,12 +125,17 @@ export default function FormDialog() {
         }
       });
     }
+    else{
+      return checkBox
+    }
+    }
 
 
 
     var radioButton = [];
      function parseInputRadio(value) {
-    
+      if(value!=null){
+        
       var inputArrays = value.split("\n");
       console.log(inputArrays);
     
@@ -184,18 +189,17 @@ export default function FormDialog() {
         }
       });
     }
+    else{
+      return radioButton
+    }
+    }
     var category_name ;
      function foodCategory(value){
        category_name = value.split(',');
-
-       console.log(category_name)
     }
     foodCategory(values.food_category_id)
     parseInputCheckbox(values.check_boxes)
     parseInputRadio(values.radio_button)
-    console.log(values.food_category_id)
-
-
     ff.add({
       food_name: values.food_name,
       food_description: values.food_description,
@@ -285,6 +289,7 @@ export default function FormDialog() {
                   <Typography align="left">Food Name</Typography>
                   <TextField
                   required
+                    autoComplete="off"
                   autoComplete="off"
                     id="outlined-basic"
                     name="food_name"
@@ -300,6 +305,7 @@ export default function FormDialog() {
                   <Typography align="left">Food price</Typography>
                   <TextField
                   required
+                    autoComplete="off"
                   autoComplete="off"
                     id="outlined-basic"
                     name="food_price"
@@ -313,6 +319,7 @@ export default function FormDialog() {
                   <Typography align="left">Food Description</Typography>
                   <TextField
                   required
+                    autoComplete="off"
                   autoComplete="off"
                     id="outlined-basic"
                     name="food_description"

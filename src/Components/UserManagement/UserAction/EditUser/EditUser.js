@@ -126,6 +126,7 @@ export default function FormDialog({ user }) {
                     id="outlined-basic"
                     name="user_email"
                     required
+                    autoComplete="off"
                     value={formik.values.user_email}
                     onChange={formik.handleChange}
                     variant="outlined"
@@ -138,6 +139,7 @@ export default function FormDialog({ user }) {
                     id="outlined-basic"
                     name="phone_number"
                     required
+                    autoComplete="off"
                     value={formik.values.phone_number}
                     onChange={formik.handleChange}
                     variant="outlined"
