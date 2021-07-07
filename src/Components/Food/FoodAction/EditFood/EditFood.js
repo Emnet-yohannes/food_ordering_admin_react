@@ -65,14 +65,20 @@ export default function FormDialog({ food }) {
 
   const handleUpdate = async (values) => {
     // const updateRef = ref.collection("orders").child(order.id);
-
-    
+    var myArray;
+    function splitter(value){
+      myArray = value.split(",")
+      console.log("jsad")
+    }
+    splitter(values.food_category_id);
 
     ref.firestore().collection("food").doc(food.id).update({
         food_name: values.food_name,
         food_description: values.food_description,
         food_price:values.food_price,
-        food_category_id:values.food_category_id,
+        food_category_id:myArray[0],
+        food_category_name:myArray[1],
+
     })
 
     // updateRef.update({
@@ -86,6 +92,7 @@ export default function FormDialog({ food }) {
       food_description: food.food_description,
       food_price:food.food_price,
       food_category_id:food.food_category_id,
+      
     },
     // validationSchema: schema,
     onSubmit: async (values) => {
@@ -127,6 +134,32 @@ export default function FormDialog({ food }) {
 
             <Grid container>
               <Grid item xs={12}>
+
+
+
+
+              <Box p={2}>
+                    <Typography align="left">Food Category</Typography>
+                    <NativeSelect
+                      required
+                      name="food_category_id"
+                      id="demo-customized-select-native"
+                      variant="contained"
+                      onChange={formik.handleChange}
+                      style={{ width: "100%" }}
+                      value={formik.values.food_category_id}
+                    >
+                      <option aria-label="None" value="" />
+                      {foodCategoryArray.map((fcategory => (
+                        <option value={`${fcategory.id},${fcategory.category_name}`}>{fcategory.category_name}</option>
+                      )))}
+                    </NativeSelect>
+                    </Box>
+
+
+
+
+
                 <Box m={2}>
                   <Typography align="left">name</Typography>
                   <TextField
@@ -140,6 +173,21 @@ export default function FormDialog({ food }) {
                     <Box width={400}></Box>
                   </TextField>
                 </Box>
+
+                {/* <Box m={2}>
+                  <Typography align="left">Food Category name</Typography>
+                  <TextField
+                    id="outlined-basic"
+                    name="food_category_name"
+                    value={formik.values.food_category_name}
+                    onChange={formik.handleChange}
+                    variant="outlined"
+                    style={{ width: "100%" }}
+                  >
+                    <Box width={400}></Box>
+                  </TextField>
+                </Box> */}
+
                 <Box p={2}>
                   <Typography align="left">Description</Typography>
                   <TextField
@@ -161,7 +209,7 @@ export default function FormDialog({ food }) {
                     variant="outlined"
                     style={{ width: "100%" }}
                   />
-                    <Box p={2}>
+                    {/* <Box p={2}>
                   <Typography align="left">Food Category</Typography>
                   <NativeSelect
                   name="food_category_id"
@@ -170,16 +218,12 @@ export default function FormDialog({ food }) {
           onChange={formik.handleChange}
           value={formik.values.food_category_id}
         >
-          {/* <option aria-label="None" value="" />
-          <option value="ten">Ten</option>
-          <option value="twenty">Twenty</option>
-          <option value="thirty">Thirty</option> */}
           <option aria-label="None" value=""/>
           {foodCategoryArray.map((fcategory=>(
             <option value={fcategory.id}>{fcategory.category_name}</option>
           )))}
         </NativeSelect>
-                </Box>
+                </Box> */}
                 </Box>
                 
               </Grid>

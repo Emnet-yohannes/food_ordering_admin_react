@@ -46,11 +46,25 @@ export default function DataGridDemo({ orderPath }) {
 
   const [food, setfood] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [userDetails, setUserDetails] = useState('')
+
+
+
+
+  // food_name: values.food_name,
+  // food_description: values.food_description,
+  // food_price: values.food_price,
+  // food_category_id: category_name[0],
+  // food_category_name:category_name[1],
+  // radioButton,
+  // checkBox,
+  // keywords: values.keywords
 
 
 
   const columns = [
     { field: "id", headerName: "ID", width: 170 },
+    { field: "food_category_name", headerName: "Category Name", width: 170 },
     { field: "food_name", headerName: "Name", width: 170 },
     { field: "food_price", headerName: "Price", width: 170 },
     { field: "food_description", headerName: "Description", width: 170 },
@@ -65,68 +79,36 @@ export default function DataGridDemo({ orderPath }) {
           food={{
             id: params.getValue("id"),
             food_name: params.getValue("food_name"),
+            food_category_name:params.getValue("food_category_name"),
             food_description: params.getValue("food_description"),
-            food_price:params.getValue("food_price")
+            food_price:params.getValue("food_price"),
+            radioButton:params.getValue("radioButton"),
+            checkBox:params.getValue("checkBox"),
+            keywords:params.getValue("keywords"),
+
           }}
           
         />
       ),
-      // {
-      //   field: "",
-      //   headerName: "Order Status",
-      //   width: 150,
-      //   renderCell: (params) => (
-      //     <Select
-      //       labelId="demo-customized-select-label"
-      //       id="demo-customized-select"
-      //       displayEmpty
-      //       value={age}
-      //       onChange={(event) =>
-      //         ref
-      //           .collection("orders")
-      //           .doc(params.getValue("id"))
-      //           .update({
-      //             order_status: event.target.value,
-      //           })
-      //       }
-            
-      //       input={<BootstrapInput />}
-      //     >
-            
-      //       {setidGetter(params.getValue("id"))}
-  
-      //       <MenuItem value={""}>{params.getValue("order_status")}</MenuItem>
-      //       <Box height="30px" border={1}></Box>
-      //       <MenuItem value={"accepted"}>accepted</MenuItem>
-      //       <MenuItem value={"prepared"}>prepared</MenuItem>
-      //       <MenuItem value={"delivered"}>delivered</MenuItem>
-      //       <MenuItem value={"rejected"}>rejected</MenuItem>
-      //     </Select>
-      //   ),
-      // },
-    },
-    // {
-    //     field: "actions",
-    //     headerName: "Action",
-    //     width: 220,
-  
-    //     renderCell: (params) => (
-    //       <DriverActions
-    //         driver={{
-    //           id: params.getValue("id"),
-    //           customer_name: params.getValue("customer_name"),
-    //           order_date: getValue(params, "order_date"),
-    //           order_status: getValue(params, "order_status"),
-    //           payment_status: getValue(params, "payment_status"),
-    //           order_total: getValue(params, "order_total"),
-    //         }}
-    //       />
-    //     ),
-    //   },
-  ];
 
-  // const ref = firebase.firestore().collection("foodCategories")
-  // //console.log(ref);
+    },
+  ]
+  // const getAllfoodcat = (id) => {
+  //   ref.firestore().collection("food_category").doc(id)
+  // .get()
+  // .then(function(doc) {
+  //   if (doc.exists) {
+  //     console.log("Document data:", doc.get("category_name"));
+  //     setUserDetails(doc.get("category_name"))
+  //     return userDetails
+  //   } else {
+  //     // doc.data() will be undefined in this case
+  //     console.log("No such document!");
+  //   }
+  // }).catch(function(error) {
+  //   console.log("Error getting document:", error);
+  // });
+  // };
 
   const getAllfood = () => {
     setLoading(true);
@@ -145,13 +127,6 @@ export default function DataGridDemo({ orderPath }) {
     getAllfood()
   }, []);
 
-  // useEffect(() => {
-  //   acceptedfoodCategories();
-
-  // }, [])
-
-  //   const row = ''
-
   return (
     <div style={{ height: 550, width: "77vw" }}>
             
@@ -167,7 +142,8 @@ export default function DataGridDemo({ orderPath }) {
         pageSize={10}
         pagination {...food}
         // checkboxSelection
-      ></DataGrid>
+      >
+      </DataGrid>
     </div>
   );
 }

@@ -92,9 +92,9 @@ class ComponentToPrint extends Component{
                         <TableCell>{row.food.food_name}</TableCell>
                         <TableCell>{row.quantity}</TableCell>
                         <TableCell>{row.total_price}</TableCell>
-                        <TableCell>{row.sizes>0?row.extras.map(extra=>(
-                          extra.extra_name + ", "
-                        )):null}</TableCell>
+                        <TableCell>{row.sizes!==0?row.extras.map(extra=>(
+                          `(${extra.extra_name} , ${extra.extra_price}),`
+                        )):"null"}</TableCell>
                         <TableCell>
                           {row.sizes>0?row.sizes.map(size=>(
                           
@@ -118,7 +118,7 @@ class ComponentToPrint extends Component{
                   
                 </Table>
               </TableContainer>
-              <Typography variant="h6" style={style}>Customer Detials</Typography>
+              {/* <Typography variant="h6" style={style}>Customer Detials</Typography>
               <TableContainer component={Paper} style={style}>
                 <Table>
                   <TableBody>
@@ -131,7 +131,7 @@ class ComponentToPrint extends Component{
                     ))}
                   </TableBody>
                 </Table>
-              </TableContainer>
+              </TableContainer> */}
             </div>
         )
     }

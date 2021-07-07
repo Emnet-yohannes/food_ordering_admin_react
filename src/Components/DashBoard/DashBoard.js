@@ -102,12 +102,12 @@ const DashBoard = () => {
         let delivered = 0;
         let rejected = 0;
         // //console.log(today)
-        reference.onSnapshot((querySnapshot)=>{
+        ref.firestore().collection("orders").onSnapshot((querySnapshot)=>{
           querySnapshot.forEach((doc)=>{
-            //  //console.log(moment(doc.get("order_time")).format('l'))
+            //  console.log(moment(doc.get("order_time")).format('l'))
             // //console.log("this week" +moment(doc.get("order_time")).calendar())
-            // //console.log("this" + moment(today).calendar())
-            if(moment(doc.get("order_time")).format('l')==moment(today).format('l')){
+            // console.log("this" + moment(today).format('l'))
+            if((moment(doc.get("order_time")).format('l'))===moment(today).format('l')){
               counter = counter+1;
               if(doc.get("order_status")==="Pending"){
                 pending = pending + 1;
@@ -118,8 +118,10 @@ const DashBoard = () => {
               else if(doc.get("order_status")==="Rejected"){
                 rejected = rejected + 1;
               }
+            }else{
+              counter=0;
             }
-            // //console.log("counter "+moment(today).format('l'))
+            // console.log("counter "+moment(today).format('l'))
           })
           // //console.log("counter "+counter)
           // //console.log(pending)
@@ -152,6 +154,8 @@ const DashBoard = () => {
               else if(doc.get("order_status")==="Rejected"){
                 rejected2 = rejected2 + 1;
               }
+            }else{
+              counter2=0;
             }
             // //console.log("counter3 "+moment(today).format('l'))
           })
@@ -172,8 +176,9 @@ const DashBoard = () => {
 
         reference.onSnapshot((querySnapshot)=>{
           querySnapshot.forEach((doc)=>{
-            //  //console.log(moment(doc.get("order_time")).format('l'))
-            if(moment(doc.get("order_time")).calendar()>=moment().startOf('month').format("l")){
+            //  console.log(moment(doc.get("order_time")).format('l'))
+            // console.log(moment().startOf('month').format("l"))
+            if(moment(doc.get("order_time")).format("l")>=moment().startOf('month').format("l")){
               counter3 = counter3+1;
               if(doc.get("order_status")==="Pending"){
                 pending3 = pending3 + 1;
@@ -184,6 +189,8 @@ const DashBoard = () => {
               else if(doc.get("order_status")==="Rejected"){
                 rejected3 = rejected3 + 1;
               }
+            }else{
+              counter3=0;
             }
             // //console.log("counter3 "+moment(today).format('l'))
           })

@@ -20,7 +20,7 @@ export default function FormDialog({food}) {
   //   };
  const handleDelete = () =>{
   ref.firestore().collection("food").doc(food.id).delete();
-  handleClickOpen()
+  handleClose()
 
  }
 
