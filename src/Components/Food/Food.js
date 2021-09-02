@@ -85,6 +85,8 @@ export default function DataGridDemo({ orderPath }) {
             radioButton:params.getValue("radioButton"),
             checkBox:params.getValue("checkBox"),
             keywords:params.getValue("keywords"),
+            checkBoxString:params.getValue("checkBoxString"),
+            radioButtonString:params.getValue("radioButtonString")
 
           }}
           

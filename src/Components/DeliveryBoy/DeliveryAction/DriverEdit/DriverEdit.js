@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { TextField, Typography, Grid, Box, Container } from "@material-ui/core";
+import { TextField, Typography, Grid, Box, Container, NativeSelect } from "@material-ui/core";
 import React from "react";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
@@ -30,6 +30,9 @@ export default function FormDialog({ driver,actionName }) {
     name: Yup.string().required("Name is Required"),
     phone_number: Yup.string().required("subject is Required"),
     email: Yup.string().required("email is Required"),
+    status:Yup.string().required("status is Required"),
+    online_status:Yup.string().required("online status is Required"),
+    approve_status:Yup.string().required("approve status is Required"),
 
   });
 
@@ -49,6 +52,9 @@ export default function FormDialog({ driver,actionName }) {
         last_name:values.last_name,
         phone_number: values.phone_number,
         email: values.email,
+        status:values.status,
+        online_status:values.online_status,
+        approve_status:values.approve_status,
     });
 
     // updateRef.update({
@@ -62,6 +68,9 @@ export default function FormDialog({ driver,actionName }) {
       last_name: driver.last_name,
       phone_number: driver.phone_number,
       email: driver.email,
+      status:driver.status,
+      online_status:driver.online_status,
+      approve_status:driver.approve_status
     },
     // validationSchema: schema,
     onSubmit: async (values) => {
@@ -103,7 +112,6 @@ export default function FormDialog({ driver,actionName }) {
                     id="outlined-basic"
                     name="name"
                     required
-                    autoComplete="off"
                     value={formik.values.name}
                     onChange={formik.handleChange}
                     variant="outlined"
@@ -117,7 +125,6 @@ export default function FormDialog({ driver,actionName }) {
                     id="outlined-basic"
                     name="last_name"
                     required
-                    autoComplete="off"
                     value={formik.values.last_name}
                     onChange={formik.handleChange}
                     variant="outlined"
@@ -131,7 +138,6 @@ export default function FormDialog({ driver,actionName }) {
                     id="outlined-basic"
                     name="phone_number"
                     required
-                    autoComplete="off"
                     value={formik.values.phone_number}
                     onChange={formik.handleChange}
                     variant="outlined"
@@ -144,12 +150,86 @@ export default function FormDialog({ driver,actionName }) {
                     id="outlined-basic"
                     name="email"
                     required
-                    autoComplete="off"
                     value={formik.values.email}
                     onChange={formik.handleChange}
                     variant="outlined"
                     style={{ width: "100%" }}
                   />
+                </Box>
+                <Box p={2}>
+                  <Typography align="left">Status</Typography>
+                  {/* <TextField
+                    id="outlined-basic"
+                    name="status"
+                    required
+                    value={formik.values.status}
+                    onChange={formik.handleChange}
+                    variant="outlined"
+                    style={{ width: "100%" }}
+                  /> */}
+                   <NativeSelect
+                    fullWidth
+                    name="status"
+                    id="demo-customized-select-native"
+                    required
+                    onChange={formik.handleChange}
+                    value={formik.values.status}
+                  >
+                    <option aria-label="None" value="" />
+                    <option value="Active">Active</option>
+                    <option value="InActive">InActive</option>
+          
+                  </NativeSelect>
+                </Box>
+                <Box p={2}>
+                  <Typography align="left">Online Status</Typography>
+                  {/* <TextField
+                    id="outlined-basic"
+                    name="online_status"
+                    required
+                    value={formik.values.online_status}
+                    onChange={formik.handleChange}
+                    variant="outlined"
+                    style={{ width: "100%" }}
+                  /> */}
+                  <NativeSelect
+                    fullWidth
+                    name="online_status"
+                    id="demo-customized-select-native"
+                    required
+                    onChange={formik.handleChange}
+                    value={formik.values.online_status}
+                  >
+                    <option aria-label="None" value="" />
+                    <option value="Online">Online</option>
+                    <option value="Offline">Offline</option>
+          
+                  </NativeSelect>
+                </Box>
+                <Box p={2}>
+                  <Typography align="left">approve_status</Typography>
+                  {/* <TextField
+                    id="outlined-basic"
+                    name="approve_status"
+                    required
+                    value={formik.values.approve_status}
+                    onChange={formik.handleChange}
+                    variant="outlined"
+                    style={{ width: "100%" }}
+                  /> */}
+                  <NativeSelect
+                    fullWidth
+                    name="approve_status"
+                    id="demo-customized-select-native"
+                    required
+                    onChange={formik.handleChange}
+                    value={formik.values.approve_status}
+                  >
+                    <option aria-label="None" value="" />
+                    <option value="Approved">Approved</option>
+                    <option value="Declined">Declined</option>
+          
+                  </NativeSelect>
                 </Box>
               </Grid>
               {/* <Grid item xs={6} style={{textAlign:"center"}}>

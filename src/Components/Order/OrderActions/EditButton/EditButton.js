@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { TextField, Typography, Grid, Box, Container } from "@material-ui/core";
+import { TextField, Typography, Grid, Box, Container, NativeSelect } from "@material-ui/core";
 import React from "react";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
@@ -28,10 +28,12 @@ export default function FormDialog({ order }) {
   };
 
   const schema = Yup.object().shape({
-    order_date: Yup.string().required("Name is Required"),
+    // order_date: Yup.string().required("Name is Required"),
     customer_name: Yup.string().required("subject is Required"),
+    order_status:Yup.string().required("order status is required"),
     payment_status: Yup.string().required("email is Required"),
     status: Yup.string().required("message is Required"),
+
   });
 
   // ref.collection("orders").onSnapshot((querySnapshot) => {
@@ -46,9 +48,10 @@ export default function FormDialog({ order }) {
     // const updateRef = ref.collection("orders").child(order.id);
 
     ref.firestore().collection("orders").doc(order.id).update({
-        order_date: values.order_date,
-        customer_name: values.customer_name,
+        // order_date: values.order_date,
+        order_for: values.customer_name,
         // id: values.id,
+        order_status:values.order_status,
         payment_status: values.payment_status,
     });
 
@@ -59,7 +62,8 @@ export default function FormDialog({ order }) {
 
   const formik = useFormik({
     initialValues: {
-      order_date: order.order_date,
+      // order_date: order.order_date,
+      order_status:order.order_status,
       customer_name: order.customer_name,
       // id: order.id,
       payment_status: order.payment_status,
@@ -101,17 +105,16 @@ export default function FormDialog({ order }) {
         <form onSubmit={formik.handleSubmit}>
           <DialogTitle id="form-dialog-title">Edit Order</DialogTitle>
           <DialogContent>
-            <DialogContentText>please insert order</DialogContentText>
+            <DialogContentText>please edit order</DialogContentText>
 
             <Grid container>
               <Grid item xs={12}>
-                <Box m={2}>
+                {/* <Box m={2}>
                   <Typography align="left">date</Typography>
                   <TextField
                     id="outlined-basic"
                     name="order_date"
                     required
-                    autoComplete="off"
                     value={formik.values.order_date}
                     onChange={formik.handleChange}
                     variant="outlined"
@@ -119,43 +122,62 @@ export default function FormDialog({ order }) {
                   >
                     <Box width={400}></Box>
                   </TextField>
-                </Box>
+                </Box> */}
                 <Box p={2}>
                   <Typography align="left">Customer Name</Typography>
                   <TextField
                     id="outlined-basic"
                     name="customer_name"
                     required
-                    autoComplete="off"
                     value={formik.values.customer_name}
                     onChange={formik.handleChange}
                     variant="outlined"
                     style={{ width: "100%" }}
                   />
                 </Box>
-                {/* <Box p={2}>
-                  <Typography align="left">Id</Typography>
-                  <TextField
-                    id="outlined-basic"
-                    name="id"
-                    value={formik.values.id}
-                    onChange={formik.handleChange}
-                    variant="outlined"
-                    style={{ width: "100%" }}
-                  />
-                </Box> */}
+
                 <Box p={2}>
                   <Typography align="left">Order Status</Typography>
-                  <TextField
+                  <NativeSelect
+                    fullWidth
+                    name="order_status"
+                    id="demo-customized-select-native"
+                    required
+                    onChange={formik.handleChange}
+                    value={formik.values.order_status}
+                  >
+                    <option value="Pending">Pending</option>
+                    <option value="Accepted">Accepted</option>
+                    <option value="Prepared">Prepared</option>
+                    <option value="Delivered">Delivered</option>
+                    <option value="Rejected">Rejected</option>
+
+          
+                  </NativeSelect>
+                </Box>
+                <Box p={2}>
+                  <Typography align="left">Payment Status</Typography>
+                  {/* <TextField
                     id="outlined-basic"
                     name="payment_status"
                     required
-                    autoComplete="off"
                     value={formik.values.payment_status}
                     onChange={formik.handleChange}
                     variant="outlined"
                     style={{ width: "100%" }}
-                  />
+                  /> */}
+                  <NativeSelect
+                    fullWidth
+                    name="payment_status"
+                    id="demo-customized-select-native"
+                    required
+                    onChange={formik.handleChange}
+                    value={formik.values.payment_status}
+                  >
+                    <option value="Success">Success</option>
+                    <option value="Pending">Pending</option>
+          
+                  </NativeSelect>
                 </Box>
               </Grid>
               {/* <Grid item xs={6} style={{textAlign:"center"}}>

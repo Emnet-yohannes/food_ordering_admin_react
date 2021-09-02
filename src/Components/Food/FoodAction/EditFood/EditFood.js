@@ -3,6 +3,7 @@ import { useState,useEffect } from "react";
 import { TextField, Typography, Grid, Box, Container } from "@material-ui/core";
 import React from "react";
 import Button from "@material-ui/core/Button";
+import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -68,9 +69,140 @@ export default function FormDialog({ food }) {
     var myArray;
     function splitter(value){
       myArray = value.split(",")
-      console.log("jsad")
     }
     splitter(values.food_category_id);
+
+
+
+
+
+
+
+
+
+
+
+
+    var checkBox = [];
+    function parseInputCheckbox(value) {
+      if(value!=null){
+      var inputArrays = value.split("\n");
+      inputArrays.forEach(async(line) => {
+        try {
+          var categoryName = line.substring(
+            line.indexOf("[") + 1,
+            line.indexOf("]")
+          );
+          if (categoryName.length == 0) {
+            throw Error("invalid format");
+          }
+          var items = line.substring(line.indexOf("]") + 1).trim();
+          var itemsArray = items.split("-");
+          itemsArray.forEach((item) => {
+            var itemName = item.substring(0, item.indexOf(":")).trim();
+            var itemPrice = item.substring(item.indexOf(":") + 1).trim();
+    
+    
+            if (itemName.length == 0) {
+              throw Error("invalid format");
+            }
+            if (typeof(itemPrice)!="number" && Number.isNaN(+itemPrice) || itemPrice.length == 0) {
+              throw Error("invalid format");
+            }
+    
+            checkBox.push({
+              cat_name: categoryName,
+              extra_name: itemName,
+              extra_price: itemPrice,
+              type:"checkbox"
+            });
+          });
+          // await setcheckBox(checkBox)
+          return checkBox;
+        } catch (error) {
+          alert("invalid format");
+          return null;
+        }
+      });
+    }
+    else{
+      return checkBox
+    }
+    }
+
+
+
+    var radioButton = [];
+     function parseInputRadio(value) {
+      if(value!=null){
+        
+      var inputArrays = value.split("\n");
+    
+      inputArrays.forEach((line) => {
+        try {
+          var categoryName = line.substring(
+            line.indexOf("[") + 1,
+            line.indexOf("]")
+          );
+          if (categoryName.length == 0) {
+            throw Error("invalid format");
+          }
+          var items = line.substring(line.indexOf("]") + 1).trim();
+          var itemsArray = items.split("-");
+          itemsArray.forEach((item) => {
+            var itemName = item.substring(0, item.indexOf(":")).trim();
+            var itemPrice = item.substring(item.indexOf(":") + 1).trim();
+    
+            if (itemName.length == 0) {
+              throw Error("invalid format");
+            }
+            if (typeof(itemPrice)!="number" && Number.isNaN(+itemPrice) || itemPrice.length == 0) {
+              throw Error("invalid format");
+            }
+    
+            radioButton.push({
+              cat_name: categoryName,
+              extra_name: itemName,
+              extra_price: itemPrice,
+              type:"radioButton"
+            });
+            // console.log(radioButton);
+            
+          });
+          // setradioButton(radioButton)
+          return radioButton;
+        } catch (error) {
+          alert("invalid format");
+          return null;
+        }
+      });
+    }
+    else{
+      return radioButton
+    }
+    }
+    var category_name ;
+     function foodCategory(value){
+       category_name = value.split(',');
+    }
+    foodCategory(values.food_category_id)
+    var bar = parseInputCheckbox
+    var bar2 = parseInputRadio
+
+    bar(values.checkBoxString)
+    bar2(values.radioButtonString)
+    // console.log(bar())
+    var checkBox = bar()
+    var radioButton = bar2()
+
+
+
+
+
+
+
+
+
 
     ref.firestore().collection("food").doc(food.id).update({
         food_name: values.food_name,
@@ -78,6 +210,10 @@ export default function FormDialog({ food }) {
         food_price:values.food_price,
         food_category_id:myArray[0],
         food_category_name:myArray[1],
+        radioButton:radioButton,
+        checkBox:checkBox,
+        radioButtonString:values.radioButtonString,
+        checkBoxString:values.checkBoxString
 
     })
 
@@ -92,6 +228,8 @@ export default function FormDialog({ food }) {
       food_description: food.food_description,
       food_price:food.food_price,
       food_category_id:food.food_category_id,
+      radioButtonString:food.radioButtonString,
+      checkBoxString:food.checkBoxString,
       
     },
     // validationSchema: schema,
@@ -125,7 +263,7 @@ export default function FormDialog({ food }) {
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
         fullWidth
-  maxWidth="sm"
+        maxWidth="md"
       >
         <form onSubmit={formik.handleSubmit}>
           <DialogTitle id="form-dialog-title">Food </DialogTitle>
@@ -215,6 +353,15 @@ export default function FormDialog({ food }) {
                     variant="outlined"
                     style={{ width: "100%" }}
                   />
+                    <Typography align="left">Radio Buttons</Typography>
+
+                    <TextareaAutosize aria-label="minimum height" rowsMin={6} style={{ width: "100%" }} placeholder="radio buttons" name="radioButtonString" value={formik.values.radioButtonString} onChange={formik.handleChange} />
+                  
+                  
+                    <Typography align="left">check Boxes</Typography>
+
+                    <TextareaAutosize aria-label="minimum height" rowsMin={6} placeholder="check Boxes" style={{ width: "100%" }} name="checkBoxString" value={formik.values.checkBoxString} onChange={formik.handleChange} />
+                  
                     {/* <Box p={2}>
                   <Typography align="left">Food Category</Typography>
                   <NativeSelect

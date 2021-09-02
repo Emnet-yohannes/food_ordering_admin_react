@@ -73,11 +73,9 @@ export default function FormDialog() {
     function parseInputCheckbox(value) {
       if(value!=null){
       var inputArrays = value.split("\n");
-      console.log(inputArrays);
     
       inputArrays.forEach(async(line) => {
         try {
-          console.log("categoryname");
           var categoryName = line.substring(
             line.indexOf("[") + 1,
             line.indexOf("]")
@@ -86,22 +84,15 @@ export default function FormDialog() {
             throw Error("invalid format");
           }
           var items = line.substring(line.indexOf("]") + 1).trim();
-          console.log(categoryName);
-          console.log(items);
           var itemsArray = items.split("-");
           itemsArray.forEach((item) => {
-            console.log(item);
             var itemName = item.substring(0, item.indexOf(":")).trim();
             var itemPrice = item.substring(item.indexOf(":") + 1).trim();
     
-            console.log("ItemName:"+itemName);
-            console.log("ItemPrice:"+itemPrice);
     
             if (itemName.length == 0) {
               throw Error("invalid format");
             }
-            console.log(typeof(itemPrice));
-            console.log(Number.parseFloat(itemPrice));
             if (typeof(itemPrice)!="number" && Number.isNaN(+itemPrice) || itemPrice.length == 0) {
               throw Error("invalid format");
             }
@@ -112,14 +103,11 @@ export default function FormDialog() {
               extra_price: itemPrice,
               type:"checkbox"
             });
-            console.log(checkBox);
             
           });
           // await setcheckBox(checkBox)
-          console.log(checkBox)
           return checkBox;
         } catch (error) {
-          console.log(error);
           alert("invalid format");
           return null;
         }
@@ -137,11 +125,9 @@ export default function FormDialog() {
       if(value!=null){
         
       var inputArrays = value.split("\n");
-      console.log(inputArrays);
     
       inputArrays.forEach((line) => {
         try {
-          console.log("categoryname");
           var categoryName = line.substring(
             line.indexOf("[") + 1,
             line.indexOf("]")
@@ -150,22 +136,15 @@ export default function FormDialog() {
             throw Error("invalid format");
           }
           var items = line.substring(line.indexOf("]") + 1).trim();
-          console.log(categoryName);
-          console.log(items);
           var itemsArray = items.split("-");
           itemsArray.forEach((item) => {
-            console.log(item);
             var itemName = item.substring(0, item.indexOf(":")).trim();
             var itemPrice = item.substring(item.indexOf(":") + 1).trim();
     
-            console.log("ItemName:"+itemName);
-            console.log("ItemPrice:"+itemPrice);
     
             if (itemName.length == 0) {
               throw Error("invalid format");
             }
-            console.log(typeof(itemPrice));
-            console.log(Number.parseFloat(itemPrice));
             if (typeof(itemPrice)!="number" && Number.isNaN(+itemPrice) || itemPrice.length == 0) {
               throw Error("invalid format");
             }
@@ -180,10 +159,8 @@ export default function FormDialog() {
             
           });
           // setradioButton(radioButton)
-          console.log(radioButton)
           return radioButton;
         } catch (error) {
-          console.log(error);
           alert("invalid format");
           return null;
         }
@@ -198,8 +175,14 @@ export default function FormDialog() {
        category_name = value.split(',');
     }
     foodCategory(values.food_category_id)
-    parseInputCheckbox(values.check_boxes)
-    parseInputRadio(values.radio_button)
+    var bar = parseInputCheckbox
+    var bar2 = parseInputRadio
+
+    bar(values.check_boxes)
+    bar2(values.radio_button)
+    // console.log(bar())
+    var checkBox = bar()
+    var radioButton = bar2()
     ff.add({
       food_name: values.food_name,
       food_description: values.food_description,
@@ -208,6 +191,8 @@ export default function FormDialog() {
       food_category_name:category_name[1],
       radioButton,
       checkBox,
+      checkBoxString:values.check_boxes,
+      radioButtonString:values.radio_button,
       keywords: values.keywords
     });
     
@@ -333,18 +318,18 @@ export default function FormDialog() {
                   <Box p={2}>
                     <Typography align="left">Radio Buttons</Typography>
 
-                    <TextareaAutosize aria-label="minimum height" rowsMin={6} style={{ width: "100%" }} placeholder="radio buttons" name="radio_button" value={formik.values.radio_button} onChange={formik.handleChange} />
+                    <TextareaAutosize aria-label="minimum height" rowsMin={6} style={{ width: "100%" }} placeholder="please try to avoid spaces " name="radio_button" value={formik.values.radio_button} onChange={formik.handleChange} />
                   </Box>
                   <Box m={2}>
                     <Typography align="left">check Boxes</Typography>
 
-                    <TextareaAutosize aria-label="minimum height" rowsMin={6} placeholder="check Boxes" style={{ width: "100%" }} name="check_boxes" value={formik.values.check_boxes} onChange={formik.handleChange} />
+                    <TextareaAutosize aria-label="minimum height" rowsMin={6} placeholder="please try to avoid spaces " style={{ width: "100%" }} name="check_boxes" value={formik.values.check_boxes} onChange={formik.handleChange} />
                   </Box>
-                  <Box m={2}>
+                  {/* <Box m={2}>
                     <Typography align="left">KeyWords</Typography>
 
                     <TextareaAutosize aria-label="minimum height" rowsMin={6} name="keywords" style={{ width: "100%" }} value={formik.values.keywords} check_boxes onChange={formik.handleChange} />
-                  </Box>
+                  </Box> */}
                 </Box>
               </Grid>
             </Grid>

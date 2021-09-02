@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { TextField, Typography, Grid, Box, Container } from "@material-ui/core";
+import { TextField, Typography, Grid, Box, Container, NativeSelect } from "@material-ui/core";
 import {withRouter} from "react-router"
 import React,{useCallback} from "react";
 import Button from "@material-ui/core/Button";
@@ -15,17 +15,6 @@ import * as Yup from "yup";
 import ref from "../../../../firebase/firebase";
 import 'firebase/firestore';
 
-const schema = Yup.object().shape({
-  name: Yup.string().min(2, 'Too Short!')
-  .max(50, 'Too Long!')
-  .required('Required'),
-  phone_number: Yup.string().matches(new RegExp('[0-9]{7}')),
-  email: Yup.string().email().required("email is Required"),
-  approve_status: Yup.string().required("approve status is required"),
-  status: Yup.string().required(" status is required"),
-  online_status: Yup.string().required("online status is required"),
-
-});
 const FormDialog = ({ driver,actionName ,history}) => {
   const [open, setOpen] = React.useState(false);
   const [loading, setLoading] = useState(false);
@@ -42,6 +31,15 @@ const FormDialog = ({ driver,actionName ,history}) => {
     setOpen(false);
   };
 
+  const schema = Yup.object().shape({
+    name: Yup.string().required("Name is Required"),
+    phone_number: Yup.string().matches(new RegExp('[0-9]{7}')),
+    email: Yup.string().email().required("email is Required"),
+    approve_status: Yup.string().required("approve status is required"),
+    status: Yup.string().required(" status is required"),
+    online_status: Yup.string().required("online status is required"),
+
+  });
 
   // ref.collection("orders").onSnapshot((querySnapshot) => {
   //   const items = [];
@@ -158,8 +156,6 @@ const handleSignup = async (values)=>{
         fullWidth
   maxWidth="md"
       >
-        {
-        ({ errors, touched }) =>
          <form onSubmit={formik.handleSubmit}>
     
           <DialogTitle id="form-dialog-title">{actionName}</DialogTitle>
@@ -170,9 +166,6 @@ const handleSignup = async (values)=>{
               <Grid item xs={5}>
                 <Box p={2}>
                   <Typography align="left">name</Typography>
-                  {errors.firstName && touched.firstName ? (
-             <div>{errors.firstName}</div>
-           ) : null}
                   <TextField
                     id="outlined-basic"
                     name="name"
@@ -180,7 +173,6 @@ const handleSignup = async (values)=>{
                     onChange={formik.handleChange}
                     variant="outlined"
                     required
-                    autoComplete="off"
                     style={{ width: "100%" }}/>
                 </Box>
                 <Box p={2}>
@@ -189,7 +181,6 @@ const handleSignup = async (values)=>{
                     id="outlined-basic"
                     name="last_name"
                     required
-                    autoComplete="off"
                     value={formik.values.last_name}
                     onChange={formik.handleChange}
                     variant="outlined"
@@ -200,8 +191,7 @@ const handleSignup = async (values)=>{
                   <TextField
                     id="outlined-basic"
                     name="phone_number"
-                    rrequired
-                    autoComplete="off"
+                    required
                     value={formik.values.phone_number}
                     onChange={formik.handleChange}
                     variant="outlined"
@@ -214,7 +204,6 @@ const handleSignup = async (values)=>{
                     id="outlined-basic"
                     name="email"
                     required
-                    autoComplete="off"
                     value={formik.values.email}
                     onChange={formik.handleChange}
                     variant="outlined"
@@ -227,42 +216,78 @@ const handleSignup = async (values)=>{
 
                 <Box p={2}>
                   <Typography align="left">Status</Typography>
-                  <TextField
+                  {/* <TextField
                     id="outlined-basic"
                     name="status"
                     required
-                    autoComplete="off"
                     value={formik.values.status}
                     onChange={formik.handleChange}
                     variant="outlined"
                     style={{ width: "100%" }}
-                  />
+                  /> */}
+                   <NativeSelect
+                    fullWidth
+                    name="status"
+                    id="demo-customized-select-native"
+                    required
+                    onChange={formik.handleChange}
+                    value={formik.values.status}
+                  >
+                    <option aria-label="None" value="" />
+                    <option value="Active">Active</option>
+                    <option value="InActive">InActive</option>
+          
+                  </NativeSelect>
                 </Box>
                 <Box p={2}>
                   <Typography align="left">Online Status</Typography>
-                  <TextField
+                  {/* <TextField
                     id="outlined-basic"
                     name="online_status"
                     required
-                    autoComplete="off"
                     value={formik.values.online_status}
                     onChange={formik.handleChange}
                     variant="outlined"
                     style={{ width: "100%" }}
-                  />
+                  /> */}
+                  <NativeSelect
+                    fullWidth
+                    name="online_status"
+                    id="demo-customized-select-native"
+                    required
+                    onChange={formik.handleChange}
+                    value={formik.values.online_status}
+                  >
+                    <option aria-label="None" value="" />
+                    <option value="Online">Online</option>
+                    <option value="Offline">Offline</option>
+          
+                  </NativeSelect>
                 </Box>
                 <Box p={2}>
                   <Typography align="left">approve_status</Typography>
-                  <TextField
+                  {/* <TextField
                     id="outlined-basic"
                     name="approve_status"
                     required
-                    autoComplete="off"
                     value={formik.values.approve_status}
                     onChange={formik.handleChange}
                     variant="outlined"
                     style={{ width: "100%" }}
-                  />
+                  /> */}
+                  <NativeSelect
+                    fullWidth
+                    name="approve_status"
+                    id="demo-customized-select-native"
+                    required
+                    onChange={formik.handleChange}
+                    value={formik.values.approve_status}
+                  >
+                    <option aria-label="None" value="" />
+                    <option value="Approved">Approved</option>
+                    <option value="Declined">Declined</option>
+          
+                  </NativeSelect>
                 </Box>
               </Grid>
 
@@ -277,7 +302,6 @@ const handleSignup = async (values)=>{
             </Button>
           </DialogActions>
         </form>
-        }
       </Dialog>
     </div>
   );
