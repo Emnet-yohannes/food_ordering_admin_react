@@ -146,6 +146,7 @@ export default function DataGridDemo({ orderPath }) {
             order_for_address:getValue(params,"order_for_address"),
             order_for_area:getValue(params,"order_for_area"),
             order_for_tel:getValue(params,"order_for_tel"),
+            order_time:getValue(params,"order_time"),
           }}
         />
       ),

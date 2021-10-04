@@ -11,6 +11,7 @@ import {
   TableHead,
   Button,
 } from "@material-ui/core";
+import Moment from "react-moment";
 import ReactToPrint from "react-to-print";
 import PrintIcon from "@material-ui/icons/Print";
 
@@ -32,6 +33,7 @@ class ComponentToPrint extends Component {
     //console.log(this.props.order)
     const style = {
       margin: "1em",
+      
     };
     function createCustomerData(name, calories) {
       return { name, calories };
@@ -60,7 +62,7 @@ class ComponentToPrint extends Component {
         <div
           style={{ width: "100%", display: "flex", justifyContent: "center" }}
         >
-          <Typography>*********THAI SUN*********</Typography>
+          <Typography style={{fontWeight:"bold"}}>*********THAI SUN*********</Typography>
         </div>
         {this.props.payment_method == "Cash" ? (
           <Typography variant="h6" style={style}>
@@ -75,12 +77,20 @@ class ComponentToPrint extends Component {
 
 
         <TableContainer component={Paper} style={style}>
-          <Table>
+          <div style={{width:"98%"}}>
+          <Table style={{width:"98%"}}>
             <TableHead>
+            <TableRow style={{border:"0.5px solid"}}>
+              <Typography style={{margin:"3%"}}>
+              <Moment format="YYYY/MM/DD HH:mm">
+                {this.props.order.order_time}
+                </Moment>
+                </Typography>
+              </TableRow>
               <TableRow>
-                <TableCell>Description</TableCell>
-                <TableCell>Quantity</TableCell>
-                <TableCell>Price</TableCell>
+                <TableCell style={{border:"0.5px solid"}}>Description</TableCell>
+                <TableCell style={{border:"0.5px solid"}}>Quantity</TableCell>
+                <TableCell style={{border:"0.5px solid"}}>Price</TableCell>
                 {/* <TableCell >size</TableCell> */}
                 {/* <TableCell>extra </TableCell>
                 <TableCell>message</TableCell> */}
@@ -88,14 +98,17 @@ class ComponentToPrint extends Component {
             </TableHead>
             <TableBody>
               {this.props.order.order_items.map((row) => (
-                <TableRow>
-                  <TableCell>
+                <TableRow >
+                  <TableCell style={{border:"0.5px solid"}}>
                     <Typography>
                   {row.food.food_name}
                       </Typography>
                       {/* <Typography>
                           {row.message} 
                         </Typography> */}
+                          {Object.values(row.extras).length > 0 ?
+                        <div style={{display:"flex"}}>
+                          (
                       {Object.values(row.extras).map((list) =>
                           list.map(
                             (extra) =>
@@ -106,40 +119,45 @@ class ComponentToPrint extends Component {
                                 {extra.extra_name},
                               </Typography>
                           )
-                        )}</TableCell>
-                  <TableCell>{row.quantity}</TableCell>
-                  <TableCell>{row.total_price
+                          )}
+                          )
+                          </div>:null
+                        }
+                          
+                          </TableCell>
+                  <TableCell style={{border:"0.5px solid"}}>{row.quantity}</TableCell>
+                  <TableCell style={{border:"0.5px solid"}} style={{border:"0.5px solid"}}>{row.total_price
                   
-                  }</TableCell>
+                }</TableCell>
                   {/* <TableCell>{row.sizes!==0?row.extras.map(extra=>(
-                          `(${extra.extra_name} , ${extra.extra_price}),`
-                        )):"null"}</TableCell> */}
+                    `(${extra.extra_name} , ${extra.extra_price}),`
+                  )):"null"}</TableCell> */}
 
                   {/* <TableCell>
                     {
-                      }
-                  </TableCell>
-
+                    }
+                    </TableCell>
+                    
                   <TableCell>{row.message}</TableCell> */}
                   {/* <TableCell>
                           {row.sizes>0?row.sizes.map(size=>(
-                          
-                          size.size_name+ ", "
-                          
-                        )):null}
-                        </TableCell> */}
+                            
+                            size.size_name+ ", "
+                            
+                            )):null}
+                          </TableCell> */}
                 </TableRow>
               ))}
               <TableRow>
-                <TableCell>Total</TableCell>
-                <TableCell>{this.calculateTotal()}</TableCell>
-                <TableCell>{this.props.order.order_total}</TableCell>
+                <TableCell style={{border:"0.5px solid"}}>Total</TableCell>
+                <TableCell style={{border:"0.5px solid"}}>{this.calculateTotal()}</TableCell>
+                <TableCell style={{border:"0.5px solid"}}>{this.props.order.order_total}</TableCell>
               </TableRow>
               {/* createCustomerData("Name", this.props.order.customer_name),
       createCustomerData("Address", this.props.order.order_for_address),
       createCustomerData("Area", this.props.order.order_for_area),
-      createCustomerData("Telephone", this.props.order.order_for_tel), */}
-              <TableRow>
+    createCustomerData("Telephone", this.props.order.order_for_tel), */}
+              <TableRow style={{border:"0.5px solid"}}>
                   <Typography style={{margin:"5%"}}>
                   {this.props.order.customer_name},{this.props.order.order_for_address},{this.props.order.order_for_area}, Phone:{this.props.order.order_for_tel}
                     </Typography>
@@ -148,6 +166,7 @@ class ComponentToPrint extends Component {
             </TableBody>
             
           </Table>
+        </div>
         </TableContainer>
         {/* <Typography variant="h6" style={style}>Customer Detials</Typography>
               <TableContainer component={Paper} style={style}>
