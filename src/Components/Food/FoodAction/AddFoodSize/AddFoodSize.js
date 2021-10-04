@@ -95,6 +95,7 @@ const App=({food})=> {
               label="price"
               placeholder="Enter price"
               variant="outlined"
+              type="number"
               required
               name="size_price"
               onChange={e=> onChange(e,index)}

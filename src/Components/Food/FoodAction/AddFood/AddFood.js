@@ -14,12 +14,15 @@ import * as Yup from "yup";
 import ref from "../../../../firebase/firebase";
 import 'firebase/firestore';
 import { setGridPageActionCreator } from "@material-ui/data-grid";
+import Alert from '@material-ui/lab/Alert';
 
 export default function FormDialog() {
   const [open, setOpen] = React.useState(false);
   const [loading, setLoading] = useState(false);
   const [foodCategory, setFoodCategory] = useState("");
   const [foodCategoryArray, setFoodCategoryArray] = useState([])
+  const [checkBoxError, setCheckBoxError] = useState();
+  const [radioButtonError , setRadioButtonError] = useState();
   // const[checkBox,setcheckBox]= useState([""]); 
   // const[radioButton,setradioButton]= useState([""]); 
   const getAllFoodCategory = () => {
@@ -35,6 +38,7 @@ export default function FormDialog() {
       setLoading(false);
     });
   };
+  var messageError = "";
 
   useEffect(() => {
     getAllFoodCategory()
@@ -65,137 +69,234 @@ export default function FormDialog() {
 
 
 
-  const handleUpdate = async (values) => {
+  var checkBox ;
+  function parseInputCheckbox(value) {
+    try {
+   if(value===undefined || value===""){
+     return checkBox=[]
+   }
+   else{
 
+     
+   var inputArrays = value.split("\n");
+ 
+   inputArrays.forEach((line) => {
+       var categoryName = line.substring(
+         line.indexOf("[") + 1,
+         line.indexOf("]")
+       );
+       if (categoryName.length == 0) {
+         checkBox =null;
+         console.log(checkBox  ,"radio 2 ")
+         throw Error("invalid format on radio button ");
+       }
+       else{
+
+         var items = line.substring(line.indexOf("]") + 1).trim();
+         var itemsArray = items.split("-");
+         itemsArray.forEach((item) => {
+           var itemName = item.substring(0, item.indexOf(":")).trim();
+           var itemPrice = item.substring(item.indexOf(":") + 1).trim();
+   
+   
+           if (itemName.length == 0) {
+
+             checkBox =null;
+             console.log(checkBox  ,"radio3 ")
+             throw Error("invalid format on radio button");
+           }
+           if (typeof(itemPrice)!="number" && Number.isNaN(+itemPrice) || itemPrice.length == 0) {
+             checkBox =null
+             console.log(checkBox  ,"radio 4 ")
+             throw Error("invalid format on radio button");
+           }
+           else{
+             checkBox =[];
+            //  console.log(checkBox  ,"radio1 ")
+             checkBox.push({
+               cat_name: categoryName,
+               extra_name: itemName,
+               extra_price: itemPrice,
+               type:"checkBox"
+             });
+           }
+           // console.log(checkBox);
+         
+         });
+       }
+       // setcheckBox(checkBox)
+       console.log(checkBox,"checkerplease 1")
+       return checkBox;
+     });
+   }
+ } catch (error) {
+   console.log(checkBox,"checkerplease 2")
+   // alert(error);
+   setCheckBoxError("checkBoxError")
+
+   return null;
+ }
+
+ }
+
+ var radioButton = [] ;
+ function parseInputRadio(value) {
+     try {
+    if(value===undefined || value===""){
+      return radioButton;
+    }
+    else{
+
+      
+    var inputArrays = value.split("\n");
+  
+    inputArrays.forEach((line) => {
+        var categoryName = line.substring(
+          line.indexOf("[") + 1,
+          line.indexOf("]")
+        );
+        if (categoryName.length == 0) {
+          radioButton =null;
+          console.log(radioButton  ,"radio 2 ")
+          throw Error("invalid format on radio button ");
+        }
+        else{
+
+          var items = line.substring(line.indexOf("]") + 1).trim();
+          var itemsArray = items.split("-");
+          itemsArray.forEach((item) => {
+            var itemName = item.substring(0, item.indexOf(":")).trim();
+            var itemPrice = item.substring(item.indexOf(":") + 1).trim();
+    
+    
+            if (itemName.length == 0) {
+
+              radioButton =null;
+              console.log(radioButton  ,"radio3 ")
+              throw Error("invalid format on radio button");
+            }
+            if (typeof(itemPrice)!="number" && Number.isNaN(+itemPrice) || itemPrice.length == 0) {
+              radioButton =null
+              console.log(radioButton  ,"radio 4 ")
+              throw Error("invalid format on radio button");
+            }
+            else{
+              console.log(radioButton  ,"radio1 ")
+              radioButton.push({
+                cat_name: categoryName,
+                extra_name: itemName,
+                extra_price: itemPrice,
+                type:"radioButton"
+              });
+              return radioButton;
+            }
+            // console.log(radioButton);
+          
+          });
+        }
+        // setradioButton(radioButton)
+        // console.log(radioButton,"checkerplease 1")
+        // return radioButton;
+      });
+    }
+  } catch (error) {
+    console.log(radioButton,"checkerplease 2")
+    // alert(error);
+    setRadioButtonError("radioButtonError")
+
+    return null;
+  }
+
+  }
+  const handleUpdate = async (values) => {
+    
     const ff = ref.firestore().collection("food");
 
-    var checkBox = [];
-    function parseInputCheckbox(value) {
-      if(value!=null){
-      var inputArrays = value.split("\n");
-    
-      inputArrays.forEach(async(line) => {
-        try {
-          var categoryName = line.substring(
-            line.indexOf("[") + 1,
-            line.indexOf("]")
-          );
-          if (categoryName.length == 0) {
-            throw Error("invalid format");
-          }
-          var items = line.substring(line.indexOf("]") + 1).trim();
-          var itemsArray = items.split("-");
-          itemsArray.forEach((item) => {
-            var itemName = item.substring(0, item.indexOf(":")).trim();
-            var itemPrice = item.substring(item.indexOf(":") + 1).trim();
-    
-    
-            if (itemName.length == 0) {
-              throw Error("invalid format");
-            }
-            if (typeof(itemPrice)!="number" && Number.isNaN(+itemPrice) || itemPrice.length == 0) {
-              throw Error("invalid format");
-            }
-    
-            checkBox.push({
-              cat_name: categoryName,
-              extra_name: itemName,
-              extra_price: itemPrice,
-              type:"checkbox"
-            });
-            
-          });
-          // await setcheckBox(checkBox)
-          return checkBox;
-        } catch (error) {
-          alert("invalid format");
-          return null;
-        }
-      });
-    }
-    else{
-      return checkBox
-    }
-    }
 
 
 
-    var radioButton = [];
-     function parseInputRadio(value) {
-      if(value!=null){
-        
-      var inputArrays = value.split("\n");
-    
-      inputArrays.forEach((line) => {
-        try {
-          var categoryName = line.substring(
-            line.indexOf("[") + 1,
-            line.indexOf("]")
-          );
-          if (categoryName.length == 0) {
-            throw Error("invalid format");
-          }
-          var items = line.substring(line.indexOf("]") + 1).trim();
-          var itemsArray = items.split("-");
-          itemsArray.forEach((item) => {
-            var itemName = item.substring(0, item.indexOf(":")).trim();
-            var itemPrice = item.substring(item.indexOf(":") + 1).trim();
-    
-    
-            if (itemName.length == 0) {
-              throw Error("invalid format");
-            }
-            if (typeof(itemPrice)!="number" && Number.isNaN(+itemPrice) || itemPrice.length == 0) {
-              throw Error("invalid format");
-            }
-    
-            radioButton.push({
-              cat_name: categoryName,
-              extra_name: itemName,
-              extra_price: itemPrice,
-              type:"radioButton"
-            });
-            // console.log(radioButton);
-            
-          });
-          // setradioButton(radioButton)
-          return radioButton;
-        } catch (error) {
-          alert("invalid format");
-          return null;
-        }
-      });
-    }
-    else{
-      return radioButton
-    }
-    }
     var category_name ;
      function foodCategory(value){
        category_name = value.split(',');
     }
     foodCategory(values.food_category_id)
-    var bar = parseInputCheckbox
-    var bar2 = parseInputRadio
+    // var bar = parseInputCheckbox
+    // var bar2 = parseInputRadio
 
-    bar(values.check_boxes)
-    bar2(values.radio_button)
+    // bar(values.check_boxes)
+    // bar2(values.radio_button)
     // console.log(bar())
-    var checkBox = bar()
-    var radioButton = bar2()
-    ff.add({
-      food_name: values.food_name,
-      food_description: values.food_description,
-      food_price: values.food_price,
-      food_category_id: category_name[0],
-      food_category_name:category_name[1],
-      radioButton,
-      checkBox,
-      checkBoxString:values.check_boxes,
-      radioButtonString:values.radio_button,
-      keywords: values.keywords
-    });
-    
+    parseInputCheckbox(values.check_boxes)
+    parseInputRadio(values.radio_button)
+    var foodnameLowerCase = values.food_name.toLowerCase();
+    // console.log(category_name[0])
+    // console.log(values.checkBoxString)
+    console.log(radioButton,"radio radio")
+    console.log(checkBox,"checkBox")
+    if(radioButton !=null && checkBox!=null){
+
+      if(values.check_boxes && values.radio_button){
+        ff.add({
+          food_name: values.food_name,
+          food_name_lower_case:foodnameLowerCase,
+          food_description: values.food_description,
+          food_price: values.food_price,
+          food_category_id: category_name[0],
+          food_category_name:category_name[1],
+          radioButton,
+          checkBox,
+          checkBoxString:values.check_boxes,
+          radioButtonString:values.radio_button,
+          // keywords: values.keywords
+        });
+      }
+      else if(values.check_boxes && values.radio_button==null){
+        ff.add({
+          food_name: values.food_name,
+          food_name_lower_case:foodnameLowerCase,
+          food_description: values.food_description,
+          food_price: values.food_price,
+          food_category_id: category_name[0],
+          food_category_name:category_name[1],
+          radioButton,
+          checkBox,
+          checkBoxString:values.check_boxes,
+          // keywords: values.keywords
+        });
+  
+      }
+      else if(values.check_boxes==null && values.radio_button){
+        ff.add({
+          food_name: values.food_name,
+          food_name_lower_case:foodnameLowerCase,
+          food_description: values.food_description,
+          food_price: values.food_price,
+          food_category_id: category_name[0],
+          food_category_name:category_name[1],
+          radioButton,
+          checkBox,
+          radioButtonString:values.radio_button,
+          // keywords: values.keywords
+        });
+      }
+      else{
+        ff.add({
+          food_name: values.food_name,
+          food_name_lower_case:foodnameLowerCase,
+          food_description: values.food_description,
+          food_price: values.food_price,
+          food_category_id: category_name[0],
+          food_category_name:category_name[1],
+          radioButton,
+          checkBox,
+          // keywords: values.keywords
+        });
+      }
+      formik.resetForm();
+      setRadioButtonError(null);
+      setCheckBoxError(null);
+      handleClose()
+    }
 
   };
 
@@ -207,7 +308,7 @@ export default function FormDialog() {
       food_category_id: "",
       radioButton: "",
       checkBox: "",
-      keywords: ""
+      keywords: "",
     },
     // validationSchema: schema,
     onSubmit: async (values) => {
@@ -219,7 +320,8 @@ export default function FormDialog() {
 
       // handleEdit(updatedOrders)
       handleUpdate(values);
-      handleClose();
+      // handleClose();
+      
     },
   });
 
@@ -288,22 +390,26 @@ export default function FormDialog() {
                 </Box>
                 <Box p={2}>
                   <Typography align="left">Food price</Typography>
+                  <div style={{display:"flex"}}>
                   <TextField
                   required
                     autoComplete="off"
                   autoComplete="off"
                     id="outlined-basic"
                     name="food_price"
+                    type="number"
+                    placeholder="base price"
                     value={formik.values.food_price}
                     onChange={formik.handleChange}
                     variant="outlined"
                     style={{ width: "100%" }}
                   />
+                  <Typography>(Lowest price , then extras will be added on this)</Typography>
+                    </div>
                 </Box>
                 <Box p={2}>
                   <Typography align="left">Food Description</Typography>
                   <TextField
-                  required
                     autoComplete="off"
                   autoComplete="off"
                     id="outlined-basic"
@@ -319,11 +425,13 @@ export default function FormDialog() {
                     <Typography align="left">Radio Buttons</Typography>
 
                     <TextareaAutosize aria-label="minimum height" rowsMin={6} style={{ width: "100%" }} placeholder="please try to avoid spaces " name="radio_button" value={formik.values.radio_button} onChange={formik.handleChange} />
-                  </Box>
+                     {radioButtonError && <Alert severity="error"> check the format again!</Alert>}     
+                    </Box>
                   <Box m={2}>
                     <Typography align="left">check Boxes</Typography>
 
                     <TextareaAutosize aria-label="minimum height" rowsMin={6} placeholder="please try to avoid spaces " style={{ width: "100%" }} name="check_boxes" value={formik.values.check_boxes} onChange={formik.handleChange} />
+                   {checkBoxError && <Alert severity="error"> check the format again!</Alert>} 
                   </Box>
                   {/* <Box m={2}>
                     <Typography align="left">KeyWords</Typography>

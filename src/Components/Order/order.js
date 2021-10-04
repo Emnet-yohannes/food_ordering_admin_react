@@ -139,6 +139,7 @@ export default function DataGridDemo({ orderPath }) {
             order_date: getValue(params, "order_time"),
             order_status: getValue(params, "order_status"),
             payment_status: getValue(params, "payment_status"),
+            payment_method: getValue(params, "payment_method"),
             order_total: getValue(params, "total_price"),
             email: getValue(params, "order_for_email"),
             order_items:getValue(params,"order_items"),

@@ -44,7 +44,7 @@ const BootstrapInput = withStyles((theme) => ({
 
 export default function DataGridDemo({ orderPath }) {
 
-  const [foodCategories, setDrivers] = useState([]);
+  const [foodCategories, setFoodCategories] = useState([]);
   const [loading, setLoading] = useState(false);
 
 
@@ -52,9 +52,9 @@ export default function DataGridDemo({ orderPath }) {
     return params.getValue(name);
   };
   
-
   const columns = [
     { field: "id", headerName: "ID", width: 170 },
+    { field: "order_number", headerName: "Order Number", width: 120 },
     { field: "category_name", headerName: "Name", width: 170 },
     { field: "category_description", headerName: "Description", width: 170 },
 
@@ -69,6 +69,7 @@ export default function DataGridDemo({ orderPath }) {
             id: params.getValue("id"),
             category_name: params.getValue("category_name"),
             category_description: getValue(params, "category_description"),
+            order_number: getValue(params, "order_number"),
           }}
           
         />
@@ -105,7 +106,7 @@ export default function DataGridDemo({ orderPath }) {
         // items.push(doc.data());
         items.push({ id: doc.id, ...doc.data() });
       });
-      setDrivers(items);
+      setFoodCategories(items);
       setLoading(false);
     });
   };

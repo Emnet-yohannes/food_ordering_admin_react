@@ -29,16 +29,11 @@ export default function FormDialog({ foodCategory }) {
   const schema = Yup.object().shape({
     name: Yup.string().required("Name is Required"),
     phone_number: Yup.string().required("subject is Required"),
+    // order_number:
 
   });
 
-  // ref.collection("orders").onSnapshot((querySnapshot) => {
-  //   const items = [];
-  //   querySnapshot.forEach((doc) => {
-  //     items.push(doc.data());
-  //   });
-  //   setOrders(items);
-  // });
+
 
   const handleUpdate = async (values) => {
     // const updateRef = ref.collection("orders").child(order.id);
@@ -46,17 +41,19 @@ export default function FormDialog({ foodCategory }) {
     ref.firestore().collection("food_category").doc(foodCategory.id).update({
         category_name: values.category_name,
         category_description: values.category_description,
+        order_number:values.order_number
     });
 
     // updateRef.update({
     //   complete: !order.complete,
     // });
   };
-
+  console.log(foodCategory.order_number)
   const formik = useFormik({
     initialValues: {
       category_name: foodCategory.category_name,
       category_description: foodCategory.category_description,
+      order_number: foodCategory.order_number
     },
     // validationSchema: schema,
     onSubmit: async (values) => {
@@ -116,12 +113,25 @@ export default function FormDialog({ foodCategory }) {
                 <Box p={2}>
                   <Typography align="left">Description</Typography>
                   <TextField
+                   id="outlined-basic"
+                   name="category_description"
+                   required
+                   autoComplete="off"
+                   value={formik.values.category_description}
+                   onChange={formik.handleChange}
+                   variant="outlined"
+                   style={{ width: "100%" }}
+                  />
+                </Box>
+                <Box p={2}>
+                  <Typography align="left">Order Number</Typography>
+                  <TextField
                     id="outlined-basic"
-                    name="category_description"
-                    value={formik.values.category_description}
+                    name="order_number"
+                    type="number"
+                    value={formik.values.order_number}
                     onChange={formik.handleChange}
                     variant="outlined"
-                    required
                     autoComplete="off"
                     style={{ width: "100%" }}
                   />

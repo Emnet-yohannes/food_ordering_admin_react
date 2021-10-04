@@ -52,9 +52,9 @@ export default function FormDialog({ order }) {
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
         fullWidth
-        maxWidth="md"
+        maxWidth="sm"
       >
-        <DialogTitle id="form-dialog-title" style={{textAlign:"center"}}>Order Detail</DialogTitle>
+        {/* <DialogTitle id="form-dialog-title" style={{textAlign:"center"}}>Order Detail</DialogTitle> */}
         <DialogContent>
           {/* <DialogContentText>
               Are You sure You want to delete

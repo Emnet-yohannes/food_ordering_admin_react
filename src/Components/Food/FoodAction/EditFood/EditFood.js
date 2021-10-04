@@ -10,6 +10,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import EditIcon from "@material-ui/icons/Edit";
+import Alert from '@material-ui/lab/Alert';
 import {NativeSelect} from '@material-ui/core';
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -19,6 +20,13 @@ export default function FormDialog({ food }) {
   const [foodCategory ,setFoodCategory] = useState("");
   const [foodCategoryArray , setFoodCategoryArray] = useState([])
   const [category_name,setCategoryName] = useState([])
+  const [checkBoxError, setCheckBoxError] = useState();
+  const [radioButtonError , setRadioButtonError] = useState();
+  const [ErrorMessage ,setErrorMesssage] = useState("");
+  const [ErrorMessageCheckBox ,setErrorMessageCheckBox] = useState("");
+  const [open, setOpen] = React.useState(false);
+  const [loading, setLoading] = useState(false);
+
   const getAllFoodCategory = () => {
     setLoading(true);
     ref.firestore().collection("food_category").onSnapshot((querySnapshot) => {
@@ -37,8 +45,6 @@ export default function FormDialog({ food }) {
  
   }, [])
 
-  const [open, setOpen] = React.useState(false);
-  const [loading, setLoading] = useState(false);
   //   //console.log(open)
 
   const handleClickOpen = () => {
@@ -56,171 +62,243 @@ export default function FormDialog({ food }) {
 
   });
 
-  // ref.collection("orders").onSnapshot((querySnapshot) => {
-  //   const items = [];
-  //   querySnapshot.forEach((doc) => {
-  //     items.push(doc.data());
-  //   });
-  //   setOrders(items);
-  // });
+
+  var checkBox ;
+  function parseInputCheckbox(value) {
+    console.log(value,"initialcheckbox")
+    try {
+   if(value===undefined || value===""){
+     return checkBox=[]
+   }
+   else{
+
+     
+   var inputArrays = value.split("\n");
+ 
+   inputArrays.forEach((line) => {
+       var categoryName = line.substring(
+         line.indexOf("[") + 1,
+         line.indexOf("]")
+       );
+       if (categoryName.length == 0) {
+         checkBox =null;
+         console.log(checkBox  ,"radio 2 ")
+         throw Error("invalid format on radio button ");
+       }
+       else{
+
+         var items = line.substring(line.indexOf("]") + 1).trim();
+         var itemsArray = items.split("-");
+         itemsArray.forEach((item) => {
+           var itemName = item.substring(0, item.indexOf(":")).trim();
+           var itemPrice = item.substring(item.indexOf(":") + 1).trim();
+   
+   
+           if (itemName.length == 0) {
+
+             checkBox =null;
+             console.log(checkBox  ,"radio3 ")
+             throw Error("invalid format on radio button");
+           }
+           if (typeof(itemPrice)!="number" && Number.isNaN(+itemPrice) || itemPrice.length == 0) {
+             checkBox =null
+             console.log(checkBox  ,"radio 4 ")
+             throw Error("invalid format on radio button");
+           }
+           else{
+             checkBox =[];
+             console.log(checkBox  ,"radio1 ")
+             checkBox.push({
+               cat_name: categoryName,
+               extra_name: itemName,
+               extra_price: itemPrice,
+               type:"checkBox"
+             });
+           }
+           // console.log(checkBox);
+         
+         });
+       }
+       // setcheckBox(checkBox)
+       console.log(checkBox,"checkerplease 1")
+       return checkBox;
+     });
+   }
+ } catch (error) {
+   console.log(checkBox,"checkerplease 2")
+   // alert(error);
+   setCheckBoxError("checkBoxError")
+
+   return null;
+ }
+
+ }
+
+  var radioButton = [] ;
+   function parseInputRadio(value) {
+     console.log(value,"initial radio")
+     try {
+    if(value===undefined || value===""){
+      return radioButton=[]
+    }
+    else{
+
+      
+    var inputArrays = value.split("\n");
+  
+    inputArrays.forEach((line) => {
+        var categoryName = line.substring(
+          line.indexOf("[") + 1,
+          line.indexOf("]")
+        );
+        if (categoryName.length == 0) {
+          radioButton =null;
+          console.log(radioButton  ,"radio 2 ")
+          throw Error("invalid format on radio button ");
+        }
+        else{
+
+          var items = line.substring(line.indexOf("]") + 1).trim();
+          var itemsArray = items.split("-");
+          itemsArray.forEach((item) => {
+            var itemName = item.substring(0, item.indexOf(":")).trim();
+            var itemPrice = item.substring(item.indexOf(":") + 1).trim();
+    
+    
+            if (itemName.length == 0) {
+
+              radioButton =null;
+              console.log(radioButton  ,"radio3 ")
+              throw Error("invalid format on radio button");
+            }
+            if (typeof(itemPrice)!="number" && Number.isNaN(+itemPrice) || itemPrice.length == 0) {
+              radioButton =null
+              console.log(radioButton  ,"radio 4 ")
+              throw Error("invalid format on radio button");
+            }
+            else{
+              console.log(radioButton  ,"radio1 ")
+              radioButton.push({
+                cat_name: categoryName,
+                extra_name: itemName,
+                extra_price: itemPrice,
+                type:"radioButton"
+              });
+            }
+            // console.log(radioButton);
+          
+          });
+        }
+        // setradioButton(radioButton)
+        console.log(radioButton,"checkerplease 1")
+        return radioButton;
+      });
+    }
+  } catch (error) {
+    console.log(radioButton,"checkerplease 2")
+    // alert(error);
+    setRadioButtonError("radioButtonError")
+
+    return null;
+  }
+
+  }
 
   const handleUpdate = async (values) => {
     // const updateRef = ref.collection("orders").child(order.id);
-    var myArray;
-    function splitter(value){
-      myArray = value.split(",")
-    }
-    splitter(values.food_category_id);
-
-
-
-
-
-
-
-
-
-
-
-
-    var checkBox = [];
-    function parseInputCheckbox(value) {
-      if(value!=null){
-      var inputArrays = value.split("\n");
-      inputArrays.forEach(async(line) => {
-        try {
-          var categoryName = line.substring(
-            line.indexOf("[") + 1,
-            line.indexOf("]")
-          );
-          if (categoryName.length == 0) {
-            throw Error("invalid format");
-          }
-          var items = line.substring(line.indexOf("]") + 1).trim();
-          var itemsArray = items.split("-");
-          itemsArray.forEach((item) => {
-            var itemName = item.substring(0, item.indexOf(":")).trim();
-            var itemPrice = item.substring(item.indexOf(":") + 1).trim();
     
-    
-            if (itemName.length == 0) {
-              throw Error("invalid format");
-            }
-            if (typeof(itemPrice)!="number" && Number.isNaN(+itemPrice) || itemPrice.length == 0) {
-              throw Error("invalid format");
-            }
-    
-            checkBox.push({
-              cat_name: categoryName,
-              extra_name: itemName,
-              extra_price: itemPrice,
-              type:"checkbox"
-            });
-          });
-          // await setcheckBox(checkBox)
-          return checkBox;
-        } catch (error) {
-          alert("invalid format");
-          return null;
-        }
-      });
-    }
-    else{
-      return checkBox
-    }
-    }
 
-
-
-    var radioButton = [];
-     function parseInputRadio(value) {
-      if(value!=null){
-        
-      var inputArrays = value.split("\n");
-    
-      inputArrays.forEach((line) => {
-        try {
-          var categoryName = line.substring(
-            line.indexOf("[") + 1,
-            line.indexOf("]")
-          );
-          if (categoryName.length == 0) {
-            throw Error("invalid format");
-          }
-          var items = line.substring(line.indexOf("]") + 1).trim();
-          var itemsArray = items.split("-");
-          itemsArray.forEach((item) => {
-            var itemName = item.substring(0, item.indexOf(":")).trim();
-            var itemPrice = item.substring(item.indexOf(":") + 1).trim();
-    
-            if (itemName.length == 0) {
-              throw Error("invalid format");
-            }
-            if (typeof(itemPrice)!="number" && Number.isNaN(+itemPrice) || itemPrice.length == 0) {
-              throw Error("invalid format");
-            }
-    
-            radioButton.push({
-              cat_name: categoryName,
-              extra_name: itemName,
-              extra_price: itemPrice,
-              type:"radioButton"
-            });
-            // console.log(radioButton);
-            
-          });
-          // setradioButton(radioButton)
-          return radioButton;
-        } catch (error) {
-          alert("invalid format");
-          return null;
-        }
-      });
-    }
-    else{
-      return radioButton
-    }
-    }
     var category_name ;
      function foodCategory(value){
        category_name = value.split(',');
     }
     foodCategory(values.food_category_id)
-    var bar = parseInputCheckbox
-    var bar2 = parseInputRadio
-
-    bar(values.checkBoxString)
-    bar2(values.radioButtonString)
-    // console.log(bar())
-    var checkBox = bar()
-    var radioButton = bar2()
+    parseInputCheckbox(values.checkBoxString)
+    parseInputRadio(values.radioButtonString)
+    console.log(checkBox,"checkbox")
+    console.log(radioButton,"radio")
+    var foodnameLowerCase = values.food_name.toLowerCase();
 
 
 
+    if(radioButton !=null && checkBox!=null){
+    
+    
+      if(values.checkBoxString && values.radioButtonString){
 
+        ref.firestore().collection("food").doc(food.id).update({
+    
+            food_name: values.food_name,
+            food_name_lower_case:foodnameLowerCase,
+            food_description: values.food_description,
+            food_price:values.food_price,
+            food_category_id:category_name[0],
+            food_category_name:category_name[1],
+            radioButton:radioButton,
+            checkBox:checkBox,
+            radioButtonString:values.radioButtonString,
+            checkBoxString:values.checkBoxString
+    
+        })
+      }else if(values.checkBoxString && values.radioButtonString==null){
 
+        ref.firestore().collection("food").doc(food.id).update({
+  
+          food_name: values.food_name,
+          food_name_lower_case:foodnameLowerCase,
+          food_description: values.food_description,
+          food_price:values.food_price,
+          food_category_id:category_name[0],
+          food_category_name:category_name[1],
+          radioButton:radioButton,
+          checkBox:checkBox,
+          checkBoxString:values.checkBoxString
+  
+      })
+      }
+      else if(values.checkBoxString==null && values.radioButtonString){
+        ref.firestore().collection("food").doc(food.id).update({
+    
+          food_name: values.food_name,
+          food_name_lower_case:foodnameLowerCase,
+          food_description: values.food_description,
+          food_price:values.food_price,
+          food_category_id:category_name[0],
+          food_category_name:category_name[1],
+          radioButton:radioButton,
+          checkBox:checkBox,
+          radioButtonString:values.radioButtonString,
+  
+      })
+          
+      }
+      else{
+        ref.firestore().collection("food").doc(food.id).update({
+    
+          food_name: values.food_name,
+          food_name_lower_case:foodnameLowerCase,
+          food_description: values.food_description,
+          food_price:values.food_price,
+          food_category_id:category_name[0],
+          food_category_name:category_name[1],
+          radioButton:radioButton,
+          checkBox:checkBox,
+  
+      })
+      }
+      formik.resetForm();
+      setRadioButtonError(null);
+      setCheckBoxError(null);
+      handleClose()
+    
+    }
 
-
-
-
-
-    ref.firestore().collection("food").doc(food.id).update({
-        food_name: values.food_name,
-        food_description: values.food_description,
-        food_price:values.food_price,
-        food_category_id:myArray[0],
-        food_category_name:myArray[1],
-        radioButton:radioButton,
-        checkBox:checkBox,
-        radioButtonString:values.radioButtonString,
-        checkBoxString:values.checkBoxString
-
-    })
 
     // updateRef.update({
     //   complete: !order.complete,
     // });
   }
+  console.log(food,"food")
 
   const formik = useFormik({
     initialValues: {
@@ -241,8 +319,8 @@ export default function FormDialog({ food }) {
       // const updatedOrders = await handleUpdate()
 
       // handleEdit(updatedOrders)
-      handleUpdate(values)
-      handleClose();
+      handleUpdate(values);
+      
     },
   });
 
@@ -286,6 +364,7 @@ export default function FormDialog({ food }) {
                       onChange={formik.handleChange}
                       style={{ width: "100%" }}
                       value={formik.values.food_category_id}
+                      
                     >
                       <option aria-label="None" value="" />
                       {foodCategoryArray.map((fcategory => (
@@ -333,7 +412,6 @@ export default function FormDialog({ food }) {
                   <TextField
                     id="outlined-basic"
                     name="food_description"
-                    required
                     autoComplete="off"
                     value={formik.values.food_description}
                     onChange={formik.handleChange}
@@ -343,25 +421,33 @@ export default function FormDialog({ food }) {
                 </Box>
                 <Box p={2}>
                   <Typography align="left">price</Typography>
+                  <div style={{display:"flex"}}>
+
                   <TextField
                     id="outlined-basic"
                     name="food_price"
                     required
+                    type="number"
                     autoComplete="off"
                     value={formik.values.food_price}
                     onChange={formik.handleChange}
                     variant="outlined"
                     style={{ width: "100%" }}
                   />
+                   <Typography>
+                    (Lowest price, then extra price will be added on to this)
+                  </Typography>
+                    </div>
                     <Typography align="left">Radio Buttons</Typography>
-
+                  
                     <TextareaAutosize aria-label="minimum height" rowsMin={6} style={{ width: "100%" }} placeholder="radio buttons" name="radioButtonString" value={formik.values.radioButtonString} onChange={formik.handleChange} />
-                  
-                  
+                    {radioButtonError && <Alert severity="error"> check the format again!</Alert>}     
+
                     <Typography align="left">check Boxes</Typography>
 
                     <TextareaAutosize aria-label="minimum height" rowsMin={6} placeholder="check Boxes" style={{ width: "100%" }} name="checkBoxString" value={formik.values.checkBoxString} onChange={formik.handleChange} />
-                  
+                    {checkBoxError && <Alert severity="error"> check the format again!</Alert>} 
+                 
                     {/* <Box p={2}>
                   <Typography align="left">Food Category</Typography>
                   <NativeSelect

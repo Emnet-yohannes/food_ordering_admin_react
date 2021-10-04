@@ -47,7 +47,7 @@ export default function FormDialog() {
     ref.firestore().collection("food_category").add({
         category_name: values.category_name,
         category_description: values.category_description,
-       
+        order_number:values.order_number
     });
 
     // updateRef.update({
@@ -59,6 +59,7 @@ export default function FormDialog() {
     initialValues: {
       category_name: "",
       category_description: "",
+      order_number:"",
      
     },
     validationSchema: schema,
@@ -71,6 +72,7 @@ export default function FormDialog() {
 
       // handleEdit(updatedOrders)
       handleUpdate(values)
+      formik.resetForm()
       handleClose();
     },
   });
@@ -130,6 +132,20 @@ export default function FormDialog() {
                     autoComplete="off"
                   />
                 </Box>
+                <Box p={2}>
+                  <Typography align="left">Order Number</Typography>
+                  <TextField
+                    id="outlined-basic"
+                    name="order_number"
+                    type="number"
+                    value={formik.values.order_number}
+                    onChange={formik.handleChange}
+                    variant="outlined"
+                    style={{ width: "100%" }}
+                    autoComplete="off"
+                  />
+                </Box>
+               
                
               </Grid>
 
