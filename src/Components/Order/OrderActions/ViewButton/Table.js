@@ -24,7 +24,7 @@ class ComponentToPrint extends Component {
     var total = 0;
     for (let index = 0; index < this.props.order.order_items.length; index++) {
       const element = this.props.order.order_items[index];
-      total += element.quantity;
+      total += parseFloat(element.quantity);
     }
     return total;
   }
@@ -100,7 +100,7 @@ class ComponentToPrint extends Component {
               <TableRow>
                 <TableCell style={{border:"0.5px solid"}}>Description</TableCell>
                 <TableCell style={{border:"0.5px solid"}}>Quantity</TableCell>
-                <TableCell style={{border:"0.5px solid"}}>Price</TableCell>
+                <TableCell style={{border:"0.5px solid"}}>Total</TableCell>
                 {/* <TableCell >size</TableCell> */}
                 {/* <TableCell>extra </TableCell>
                 <TableCell>message</TableCell> */}
@@ -113,9 +113,9 @@ class ComponentToPrint extends Component {
                     <Typography>
                   {row.food.food_name}
                       </Typography>
-                      {/* <Typography>
+                      <Typography>
                           {row.message} 
-                        </Typography> */}
+                        </Typography>
                           {Object.values(row.extras).length > 0 ?
                         <div style={{display:"flex"}}>
                           (
@@ -158,11 +158,11 @@ class ComponentToPrint extends Component {
                           </TableCell> */}
                 </TableRow>
               ))}
-              <TableRow>
+              {/* <TableRow>
                 <TableCell style={{border:"0.5px solid"}}>Total</TableCell>
                 <TableCell style={{border:"0.5px solid"}}>{this.calculateTotal()}</TableCell>
                 <TableCell style={{border:"0.5px solid"}}>{this.props.order.order_total}</TableCell>
-              </TableRow>
+              </TableRow> */}
               {/* createCustomerData("Name", this.props.order.customer_name),
       createCustomerData("Address", this.props.order.order_for_address),
       createCustomerData("Area", this.props.order.order_for_area),
@@ -170,6 +170,19 @@ class ComponentToPrint extends Component {
             </TableBody>
             
           </Table>
+          <div style={{width:"98%",borderLeft:"0.5px solid",borderRight:"0.5px solid",borderBottom:"0.5px solid",display:"flex"
+          ,justifyContent:"flex-end"
+        }}>
+          <div style={{width:"25%"}}>
+                  <Typography style={{padding:"2%"}}>
+                  Amount : {parseFloat(this.props.order.order_total)}
+                  </Typography>
+                  <Typography style={{padding:"2%"}}>
+                  Net Amount : {parseFloat(this.props.order.order_total)}
+                  </Typography>
+            </div>
+               
+              </div>
               <div style={{width:"98%",borderLeft:"0.5px solid",borderRight:"0.5px solid",borderBottom:"0.5px solid"}}>
                   <Typography style={{padding:"2%"}}>
                   {this.props.order.customer_name},{this.props.order.order_for_address},{this.props.order.order_for_area}, Phone:{this.props.order.order_for_tel}
