@@ -4,6 +4,7 @@ import {
   TableContainer,
   Paper,
   TableBody,
+  TableFooter,
   TableRow,
   TableCell,
   Typography,
@@ -71,59 +72,55 @@ class ComponentToPrint extends Component {
           </Typography>
         )}
 
-        <TableContainer component={Paper} style={style}>
-          <Table>
-            <TableBody>
-              {customerRows.map((row) => (
-                <TableRow>
-                  <TableCell>{row.name}</TableCell>
-                  <TableCell>{row.calories}</TableCell>
-                  <TableCell>{row.fat}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
 
-        <Typography style={style} variant="h6">
-          Order Detials
-        </Typography>
+
         <TableContainer component={Paper} style={style}>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Order</TableCell>
+                <TableCell>Description</TableCell>
                 <TableCell>Quantity</TableCell>
                 <TableCell>Price</TableCell>
                 {/* <TableCell >size</TableCell> */}
-                <TableCell>extra </TableCell>
-                <TableCell>message</TableCell>
+                {/* <TableCell>extra </TableCell>
+                <TableCell>message</TableCell> */}
               </TableRow>
             </TableHead>
             <TableBody>
               {this.props.order.order_items.map((row) => (
                 <TableRow>
-                  <TableCell>{row.food.food_name}</TableCell>
+                  <TableCell>
+                    <Typography>
+                  {row.food.food_name}
+                      </Typography>
+                      {/* <Typography>
+                          {row.message} 
+                        </Typography> */}
+                      {Object.values(row.extras).map((list) =>
+                          list.map(
+                            (extra) =>
+                            <Typography>
+                                {/* `${Object.keys(row.extras)} (${
+                                  extra.extra_name
+                                }),` */}
+                                {extra.extra_name},
+                              </Typography>
+                          )
+                        )}</TableCell>
                   <TableCell>{row.quantity}</TableCell>
-                  <TableCell>{row.total_price}</TableCell>
+                  <TableCell>{row.total_price
+                  
+                  }</TableCell>
                   {/* <TableCell>{row.sizes!==0?row.extras.map(extra=>(
                           `(${extra.extra_name} , ${extra.extra_price}),`
                         )):"null"}</TableCell> */}
 
-                  <TableCell>
-                    {row.sizes !== 0
-                      ? Object.values(row.extras).map((list) =>
-                          list.map(
-                            (extra) =>
-                              `${Object.keys(row.extras)} (${
-                                extra.extra_name
-                              } , ${extra.extra_price}),`
-                          )
-                        )
-                      : "null"}
+                  {/* <TableCell>
+                    {
+                      }
                   </TableCell>
 
-                  <TableCell>{row.message}</TableCell>
+                  <TableCell>{row.message}</TableCell> */}
                   {/* <TableCell>
                           {row.sizes>0?row.sizes.map(size=>(
                           
@@ -138,7 +135,18 @@ class ComponentToPrint extends Component {
                 <TableCell>{this.calculateTotal()}</TableCell>
                 <TableCell>{this.props.order.order_total}</TableCell>
               </TableRow>
+              {/* createCustomerData("Name", this.props.order.customer_name),
+      createCustomerData("Address", this.props.order.order_for_address),
+      createCustomerData("Area", this.props.order.order_for_area),
+      createCustomerData("Telephone", this.props.order.order_for_tel), */}
+              <TableRow>
+                  <Typography style={{margin:"5%"}}>
+                  {this.props.order.customer_name},{this.props.order.order_for_address},{this.props.order.order_for_area}, Phone:{this.props.order.order_for_tel}
+                    </Typography>
+               
+              </TableRow>
             </TableBody>
+            
           </Table>
         </TableContainer>
         {/* <Typography variant="h6" style={style}>Customer Detials</Typography>
