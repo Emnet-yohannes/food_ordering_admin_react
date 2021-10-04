@@ -64,29 +64,39 @@ class ComponentToPrint extends Component {
         >
           <Typography style={{fontWeight:"bold"}}>*********THAI SUN*********</Typography>
         </div>
-        {this.props.payment_method == "Cash" ? (
+        {this.props.order.payment_method == "Cash" ?
+        (
           <Typography variant="h6" style={style}>
-            Paypal Collection
+            Have here
           </Typography>
-        ) : (
-          <Typography variant="h6" style={style}>
-            Paypal Delivery
-          </Typography>
-        )}
+        )
+        :
+        (
+         this.props.order.order_type == "Collection" ?
+         <Typography variant="h6" style={style}>
+           Paypal Collection
+         </Typography> :  
+         <Typography variant="h6" style={style}>
+         Paypal Delivery
+       </Typography>
+       ) 
+        }
 
 
 
         <TableContainer component={Paper} style={style}>
           <div style={{width:"98%"}}>
-          <Table style={{width:"98%"}}>
-            <TableHead>
-            <TableRow style={{border:"0.5px solid"}}>
-              <Typography style={{margin:"3%"}}>
+            <div style={{width:"98%",borderLeft:"0.5px solid",borderRight:"0.5px solid",borderTop:"0.5px solid"}}>
+              {/* <TableCell style={{border:"0.5px solid"}}> */}
+              <Typography style={{padding:"2%"}}>
               <Moment format="YYYY/MM/DD HH:mm">
                 {this.props.order.order_time}
                 </Moment>
                 </Typography>
-              </TableRow>
+                {/* </TableCell> */}
+              </div>
+          <Table style={{width:"98%"}}>
+            <TableHead>
               <TableRow>
                 <TableCell style={{border:"0.5px solid"}}>Description</TableCell>
                 <TableCell style={{border:"0.5px solid"}}>Quantity</TableCell>
@@ -157,15 +167,15 @@ class ComponentToPrint extends Component {
       createCustomerData("Address", this.props.order.order_for_address),
       createCustomerData("Area", this.props.order.order_for_area),
     createCustomerData("Telephone", this.props.order.order_for_tel), */}
-              <TableRow style={{border:"0.5px solid"}}>
-                  <Typography style={{margin:"5%"}}>
-                  {this.props.order.customer_name},{this.props.order.order_for_address},{this.props.order.order_for_area}, Phone:{this.props.order.order_for_tel}
-                    </Typography>
-               
-              </TableRow>
             </TableBody>
             
           </Table>
+              <div style={{width:"98%",borderLeft:"0.5px solid",borderRight:"0.5px solid",borderBottom:"0.5px solid"}}>
+                  <Typography style={{padding:"2%"}}>
+                  {this.props.order.customer_name},{this.props.order.order_for_address},{this.props.order.order_for_area}, Phone:{this.props.order.order_for_tel}
+                    </Typography>
+               
+              </div>
         </div>
         </TableContainer>
         {/* <Typography variant="h6" style={style}>Customer Detials</Typography>
